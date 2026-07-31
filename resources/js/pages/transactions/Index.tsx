@@ -228,19 +228,19 @@ export default function TransactionsIndex({
                                         type={data.date ? 'date' : 'text'}
                                         placeholder="dd/mm/yyyy"
                                         value={data.date}
-                                        onFocus={(e) => {
+                                        onFocus={(e: any) => {
                                             e.target.type = 'date';
 
                                             if (e.target.showPicker) {
                                                 e.target.showPicker();
                                             }
                                         }}
-                                        onBlur={(e) => {
+                                        onBlur={(e: any) => {
                                             if (!e.target.value) {
                                                 e.target.type = 'text';
                                             }
                                         }}
-                                        onClick={(e) => {
+                                        onClick={(e: any) => {
                                             if (
                                                 e.target.type === 'date' &&
                                                 e.target.showPicker
