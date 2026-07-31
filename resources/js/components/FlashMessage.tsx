@@ -9,16 +9,16 @@ export default function FlashMessage() {
         if (flash?.alert) {
             const { type, title, message } = flash.alert;
             const toastMessage = message ? `${title}: ${message}` : title;
-            
+
             if (type === 'success') {
-toast.success(toastMessage);
-} else if (type === 'error') {
-toast.error(toastMessage);
-} else if (type === 'warning') {
-toast(toastMessage, { icon: '⚠️' });
-} else {
-toast(toastMessage);
-}
+                toast.success(toastMessage);
+            } else if (type === 'error') {
+                toast.error(toastMessage);
+            } else if (type === 'warning') {
+                toast(toastMessage, { icon: '⚠️' });
+            } else {
+                toast(toastMessage);
+            }
         }
     }, [flash]);
 

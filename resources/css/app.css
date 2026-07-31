@@ -11,12 +11,12 @@
 }
 
 /* Sembunyikan Watermark/Link Elfsight */
-a[href*="elfsight.com"],
-a[href*="elfsight"],
+a[href*='elfsight.com'],
+a[href*='elfsight'],
 .eapps-link,
 .eapps-instagram-feed-badge,
-[class*="Badge__Container"],
-[class*="Watermark__Container"] {
+[class*='Badge__Container'],
+[class*='Watermark__Container'] {
     display: none !important;
     opacity: 0 !important;
     visibility: hidden !important;

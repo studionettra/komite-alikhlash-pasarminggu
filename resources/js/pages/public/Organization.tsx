@@ -19,33 +19,77 @@ export default function Organization() {
         {
             title: 'Pengurus Harian',
             members: [
-                { role: 'Ketua', name: 'Mama Una BL2 (Eka)', image: ketuaKomiteMamaUna },
-                { role: 'Wakil Ketua', name: 'Mama Gani BL1 (Nova)', image: wakilKetuaMamaGhani },
-                { role: 'Sekretaris', name: 'Mama Daania KBIT (Denissa)', image: sekretarisMamaDaania },
-                { role: 'Bendahara', name: 'Mama Sarah B (Rima)', image: bendaharaMamaSarah },
-            ]
+                {
+                    role: 'Ketua',
+                    name: 'Mama Una BL2 (Eka)',
+                    image: ketuaKomiteMamaUna,
+                },
+                {
+                    role: 'Wakil Ketua',
+                    name: 'Mama Gani BL1 (Nova)',
+                    image: wakilKetuaMamaGhani,
+                },
+                {
+                    role: 'Sekretaris',
+                    name: 'Mama Daania KBIT (Denissa)',
+                    image: sekretarisMamaDaania,
+                },
+                {
+                    role: 'Bendahara',
+                    name: 'Mama Sarah B (Rima)',
+                    image: bendaharaMamaSarah,
+                },
+            ],
         },
         {
             title: 'Bidang Media Sosial',
             members: [
-                { role: 'Ketua', name: 'Mama Athar B (Vita)', image: ketuaSosmedMamaAthar },
-                { role: 'Anggota', name: 'Mama Shanum BL1 (Widya)', image: anggotaSosmedMamaShanum },
-                { role: 'Anggota', name: 'Mama Baarik B (Rosmanih)', image: null },
-            ]
+                {
+                    role: 'Ketua',
+                    name: 'Mama Athar B (Vita)',
+                    image: ketuaSosmedMamaAthar,
+                },
+                {
+                    role: 'Anggota',
+                    name: 'Mama Shanum BL1 (Widya)',
+                    image: anggotaSosmedMamaShanum,
+                },
+                {
+                    role: 'Anggota',
+                    name: 'Mama Baarik B (Rosmanih)',
+                    image: null,
+                },
+            ],
         },
         {
             title: 'Bidang Humas',
             members: [
-                { role: 'Ketua', name: 'Mama Fath A2 (Sarah)', image: anggotaHumasMamaFath },
-                { role: 'Anggota', name: 'Mama Thariq A2 (Kunairoh)', image: anggotaHumasMamaThariq },
-            ]
+                {
+                    role: 'Ketua',
+                    name: 'Mama Fath A2 (Sarah)',
+                    image: anggotaHumasMamaFath,
+                },
+                {
+                    role: 'Anggota',
+                    name: 'Mama Thariq A2 (Kunairoh)',
+                    image: anggotaHumasMamaThariq,
+                },
+            ],
         },
         {
             title: 'Bidang Konsumsi',
             members: [
-                { role: 'Ketua', name: 'Mama Razka BL2 (Rahma)', image: ketuaKonsumsiMamaRazka },
-                { role: 'Anggota', name: 'Mama Rayya A1 (Bella)', image: anggotaKonsumsiMamaRyu },
-            ]
+                {
+                    role: 'Ketua',
+                    name: 'Mama Razka BL2 (Rahma)',
+                    image: ketuaKonsumsiMamaRazka,
+                },
+                {
+                    role: 'Anggota',
+                    name: 'Mama Rayya A1 (Bella)',
+                    image: anggotaKonsumsiMamaRyu,
+                },
+            ],
         },
     ];
 
@@ -53,33 +97,38 @@ export default function Organization() {
         const match = name.match(/\(([^)]+)\)/);
 
         if (match) {
-return match[1].charAt(0).toUpperCase();
-}
+            return match[1].charAt(0).toUpperCase();
+        }
 
-        return name.split(' ')[1]?.charAt(0).toUpperCase() || name.charAt(0).toUpperCase();
+        return (
+            name.split(' ')[1]?.charAt(0).toUpperCase() ||
+            name.charAt(0).toUpperCase()
+        );
     };
 
     return (
         <PublicLayout>
             <Head title="Susunan Pengurus - Komite KBIT-TKIT Al-Ikhlash Pasar Minggu" />
-            
+
             {/* Hero Section */}
-            <section className="bg-slate-900 pt-32 pb-24 text-center text-white border-b border-slate-800 relative overflow-hidden">
+            <section className="relative overflow-hidden border-b border-slate-800 bg-slate-900 pt-32 pb-24 text-center text-white">
                 {/* Soft decorative circles for kindergarten feel without being sloppy */}
-                <div className="absolute top-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-                <div className="absolute bottom-0 right-0 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
-                
-                <div className="max-w-4xl mx-auto px-4 relative z-10">
-                    <motion.div 
+                <div className="absolute top-0 left-0 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/10 blur-3xl"></div>
+                <div className="absolute right-0 bottom-0 h-80 w-80 translate-x-1/3 translate-y-1/3 rounded-full bg-amber-500/10 blur-3xl"></div>
+
+                <div className="relative z-10 mx-auto max-w-4xl px-4">
+                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                     >
-                        <h1 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight leading-none">
+                        <h1 className="mb-6 text-4xl leading-none font-extrabold tracking-tight md:text-6xl">
                             Wajah di Balik Komite
                         </h1>
-                        <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-                            Mengenal lebih dekat para pengurus Komite KBIT-TKIT Al-Ikhlash Pasar Minggu yang berdedikasi tinggi untuk kemajuan peserta didik dan sekolah.
+                        <p className="mx-auto max-w-2xl text-lg leading-relaxed text-slate-400 md:text-xl">
+                            Mengenal lebih dekat para pengurus Komite KBIT-TKIT
+                            Al-Ikhlash Pasar Minggu yang berdedikasi tinggi
+                            untuk kemajuan peserta didik dan sekolah.
                         </p>
                     </motion.div>
                 </div>
@@ -87,46 +136,63 @@ return match[1].charAt(0).toUpperCase();
 
             {/* Structure Grid */}
             <section className="bg-white pb-32">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                     {pengurus.map((divisi, idx) => (
-                        <div key={idx} className="py-20 border-b border-slate-100 last:border-0">
-                            <motion.div 
+                        <div
+                            key={idx}
+                            className="border-b border-slate-100 py-20 last:border-0"
+                        >
+                            <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, margin: "-100px" }}
-                                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                viewport={{ once: true, margin: '-100px' }}
+                                transition={{
+                                    duration: 0.5,
+                                    ease: [0.16, 1, 0.3, 1],
+                                }}
                                 className="mb-10 sm:mb-12"
                             >
-                                <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight text-center sm:text-left">{divisi.title}</h2>
+                                <h2 className="text-center text-2xl font-bold tracking-tight text-slate-900 sm:text-left sm:text-3xl">
+                                    {divisi.title}
+                                </h2>
                             </motion.div>
-                            
-                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-12">
+
+                            <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-12 md:grid-cols-3 lg:grid-cols-4">
                                 {divisi.members.map((member, i) => (
-                                    <motion.div 
-                                        key={i} 
+                                    <motion.div
+                                        key={i}
                                         initial={{ opacity: 0, y: 20 }}
                                         whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true, margin: "-50px" }}
-                                        transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                                        viewport={{
+                                            once: true,
+                                            margin: '-50px',
+                                        }}
+                                        transition={{
+                                            duration: 0.5,
+                                            delay: i * 0.1,
+                                            ease: [0.16, 1, 0.3, 1],
+                                        }}
                                         className="group flex flex-col"
                                     >
-                                        <div className="aspect-[4/5] w-full rounded-[2rem] mb-5 overflow-hidden bg-slate-50 relative shadow-sm border border-slate-100 group-hover:shadow-xl transition-all duration-500">
+                                        <div className="relative mb-5 aspect-[4/5] w-full overflow-hidden rounded-[2rem] border border-slate-100 bg-slate-50 shadow-sm transition-all duration-500 group-hover:shadow-xl">
                                             {member.image ? (
-                                                <img 
-                                                    src={member.image} 
-                                                    alt={member.name} 
-                                                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+                                                <img
+                                                    src={member.image}
+                                                    alt={member.name}
+                                                    className="h-full w-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
                                                     loading="lazy"
                                                 />
                                             ) : (
-                                                <div className="w-full h-full bg-slate-50 flex items-center justify-center text-5xl font-extrabold text-slate-300 group-hover:text-blue-400 group-hover:bg-blue-50 transition-colors duration-500">
+                                                <div className="flex h-full w-full items-center justify-center bg-slate-50 text-5xl font-extrabold text-slate-300 transition-colors duration-500 group-hover:bg-blue-50 group-hover:text-blue-400">
                                                     {getInitials(member.name)}
                                                 </div>
                                             )}
                                         </div>
                                         <div className="flex flex-col gap-1 text-center sm:text-left">
-                                            <h3 className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors leading-tight">{member.name}</h3>
-                                            <p className="text-xs sm:text-sm font-medium text-slate-500">
+                                            <h3 className="text-sm leading-tight font-bold text-slate-900 transition-colors group-hover:text-blue-600 sm:text-base">
+                                                {member.name}
+                                            </h3>
+                                            <p className="text-xs font-medium text-slate-500 sm:text-sm">
                                                 {member.role}
                                             </p>
                                         </div>
