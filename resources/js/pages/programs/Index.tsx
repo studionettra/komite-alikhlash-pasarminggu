@@ -1,5 +1,5 @@
 import { Head, useForm, router, Link, usePage } from '@inertiajs/react';
-import { PencilSimple, Trash, Target, CalendarBlank, CheckCircle, Clock, FlagBanner, FileText } from '@phosphor-icons/react';
+import { PencilSimple, Trash, Target, CheckCircle, Clock, FlagBanner, FileText } from '@phosphor-icons/react';
 import type { FormEventHandler} from 'react';
 import { useState } from 'react';
 import Select from '../../components/ui/Select';
@@ -83,6 +83,7 @@ export default function ProgramsIndex({ programs }: { programs: any }) {
                 </span>
             );
         }
+
         if (status === 'ongoing') {
             return (
                 <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-bold uppercase tracking-wider">
@@ -91,6 +92,7 @@ export default function ProgramsIndex({ programs }: { programs: any }) {
                 </span>
             );
         }
+
         if (status === 'completed') {
             return (
                 <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold uppercase tracking-wider">
@@ -99,6 +101,7 @@ export default function ProgramsIndex({ programs }: { programs: any }) {
                 </span>
             );
         }
+
         return status;
     };
 

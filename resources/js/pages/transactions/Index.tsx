@@ -3,8 +3,8 @@ import { Wallet, ArrowDownRight, ArrowUpRight, Faders, FileText, Trash } from '@
 import type { FormEventHandler} from 'react';
 import { useState } from 'react';
 import Select from '../../components/ui/Select';
-import { confirmDelete } from '../../utils/confirmToast';
 import DashboardLayout from '../../layouts/DashboardLayout';
+import { confirmDelete } from '../../utils/confirmToast';
 
 export default function TransactionsIndex({ transactions, programs, filters, summary }: any) {
     const { auth } = usePage().props as any;

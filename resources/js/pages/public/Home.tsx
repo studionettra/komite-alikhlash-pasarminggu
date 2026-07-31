@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
 import { Head, Link } from '@inertiajs/react';
-import PublicLayout from '../../layouts/PublicLayout';
+import { useEffect } from 'react';
 import ProgramCalendar from '../../components/public/ProgramCalendar';
+import PublicLayout from '../../layouts/PublicLayout';
 
 export default function Home({ heroProgram, activePrograms }: any) {
     useEffect(() => {
@@ -27,6 +27,7 @@ export default function Home({ heroProgram, activePrograms }: any) {
             
             // Cek jika ada shadow root
             const widget = document.querySelector('.elfsight-app-81fba1fa-87f5-4b47-bdbd-1eff0f9bdbf6');
+
             if (widget && widget.shadowRoot) {
                 const shadowLinks = widget.shadowRoot.querySelectorAll('a[href*="elfsight.com"]');
                 shadowLinks.forEach(link => {
@@ -42,6 +43,7 @@ export default function Home({ heroProgram, activePrograms }: any) {
 
         return () => {
             clearInterval(cleanerInterval);
+
             if (document.body.contains(script)) {
                 document.body.removeChild(script);
             }

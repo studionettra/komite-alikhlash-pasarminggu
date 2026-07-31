@@ -51,7 +51,11 @@ export default function Organization() {
 
     const getInitials = (name: string) => {
         const match = name.match(/\(([^)]+)\)/);
-        if (match) return match[1].charAt(0).toUpperCase();
+
+        if (match) {
+return match[1].charAt(0).toUpperCase();
+}
+
         return name.split(' ')[1]?.charAt(0).toUpperCase() || name.charAt(0).toUpperCase();
     };
 

@@ -1,5 +1,4 @@
 import { Head, usePage, Link, useForm, router } from '@inertiajs/react';
-import type { File } from '@phosphor-icons/react';
 import { 
     CalendarBlank, 
     FileText, 
@@ -32,7 +31,9 @@ function ActivityCard({ activity, programId, canManageProgram }: any) {
             }, {
                 preserveScroll: true,
                 onSuccess: () => {
-                    if (fileInputRef.current) fileInputRef.current.value = '';
+                    if (fileInputRef.current) {
+fileInputRef.current.value = '';
+}
                 },
                 onFinish: () => setIsUploading(false)
             });
@@ -54,7 +55,10 @@ function ActivityCard({ activity, programId, canManageProgram }: any) {
 
 
     const formatDate = (dateString: string) => {
-        if (!dateString) return '-';
+        if (!dateString) {
+return '-';
+}
+
         return new Date(dateString).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
     };
 
@@ -123,6 +127,7 @@ function ActivityCard({ activity, programId, canManageProgram }: any) {
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                         {activity.documents?.map((doc: any) => {
                             const isImage = ['jpg', 'jpeg', 'png'].includes(doc.file_type.toLowerCase());
+
                             return (
                                 <div key={doc.id} className="group relative aspect-square rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
                                     {isImage ? (
@@ -160,7 +165,7 @@ export default function Show({ program, summary }: any) {
     
     const [showActivityModal, setShowActivityModal] = useState(false);
     
-    const { data: activityData, setData: setActivityData, post: postActivity, processing: processingActivity, errors: activityErrors, reset: resetActivity, clearErrors: clearActivityErrors } = useForm({
+    const { data: activityData, setData: setActivityData, post: postActivity, processing: processingActivity, errors: activityErrors, reset: resetActivity } = useForm({
         program_id: program.id,
         title: '',
         activity_date: '',
@@ -185,7 +190,10 @@ export default function Show({ program, summary }: any) {
     };
 
     const formatDate = (dateString: string) => {
-        if (!dateString) return '-';
+        if (!dateString) {
+return '-';
+}
+
         return new Date(dateString).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
     };
 

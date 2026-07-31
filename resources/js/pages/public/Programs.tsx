@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react';
-import PublicLayout from '../../layouts/PublicLayout';
-import { useState, useEffect } from 'react';
 import { X, FileText, CalendarBlank, Clock, FolderOpen } from '@phosphor-icons/react';
+import { useState, useEffect } from 'react';
+import PublicLayout from '../../layouts/PublicLayout';
 
 export default function Programs({ programs }: any) {
     const [selectedProgram, setSelectedProgram] = useState<any>(null);
@@ -10,22 +10,25 @@ export default function Programs({ programs }: any) {
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const id = params.get('id');
+
         if (id && programs) {
             const program = programs.find((p: any) => p.id === parseInt(id));
+
             if (program) {
                 openProgram(program);
             }
         }
     }, [programs]);
 
-    const openProgram = (program: any) => {
+    function openProgram(program: any) {
         setSelectedProgram(program);
         setActiveTab('jadwal');
-    };
+    }
 
     const hasReports = (program: any) => {
         const hasDirectDocs = program.documents && program.documents.length > 0;
         const hasActivityDocs = program.activities && program.activities.some((act: any) => act.documents && act.documents.length > 0);
+
         return hasDirectDocs || hasActivityDocs;
     };
 
@@ -47,7 +50,11 @@ export default function Programs({ programs }: any) {
         sortedActivities.forEach((act) => {
             const date = new Date(act.activity_date);
             const monthYear = date.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
-            if (!grouped[monthYear]) grouped[monthYear] = [];
+
+            if (!grouped[monthYear]) {
+grouped[monthYear] = [];
+}
+
             grouped[monthYear].push(act);
         });
 

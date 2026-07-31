@@ -29,7 +29,7 @@ export default function MeetingsIndex({ meetings }: { meetings: any }) {
     const [editingId, setEditingId] = useState<number | null>(null);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-    const { data, setData, post, put, processing, errors, reset, clearErrors } = useForm({
+    const { data, setData, post, processing, errors, reset, clearErrors } = useForm({
         date: '',
         agenda: '',
         attendees: '',
@@ -42,11 +42,13 @@ export default function MeetingsIndex({ meetings }: { meetings: any }) {
 
     const toggleAttendee = (name: string) => {
         let newSelected;
+
         if (selectedAttendees.includes(name)) {
             newSelected = selectedAttendees.filter(a => a !== name);
         } else {
             newSelected = [...selectedAttendees, name];
         }
+
         setData('attendees', newSelected.join(', '));
     };
 
@@ -205,6 +207,7 @@ e.target.showPicker();
                                         <div className="absolute z-20 mt-2 w-full bg-white border border-slate-200 rounded-xl shadow-lg max-h-60 overflow-y-auto py-1.5">
                                             {COMMITTEE_MEMBERS.map(name => {
                                                 const isSelected = selectedAttendees.includes(name);
+
                                                 return (
                                                     <button
                                                         key={name}
@@ -213,6 +216,7 @@ e.target.showPicker();
                                                             if (!isSelected) {
                                                                 toggleAttendee(name);
                                                             }
+
                                                             setIsDropdownOpen(false);
                                                         }}
                                                         disabled={isSelected}

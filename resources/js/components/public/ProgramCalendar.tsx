@@ -1,6 +1,6 @@
-import { useState, useMemo, useEffect } from 'react';
-import { CaretLeft, CaretRight, CalendarBlank, Clock } from '@phosphor-icons/react';
 import { Link } from '@inertiajs/react';
+import { CaretLeft, CaretRight, CalendarBlank, Clock } from '@phosphor-icons/react';
+import { useState, useMemo, useEffect } from 'react';
 
 export default function ProgramCalendar({ activePrograms }: { activePrograms: any[] }) {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -39,6 +39,7 @@ export default function ProgramCalendar({ activePrograms }: { activePrograms: an
                 });
             }
         });
+
         return evts.sort((a, b) => a.date.getTime() - b.date.getTime());
     }, [activePrograms]);
 
@@ -46,8 +47,11 @@ export default function ProgramCalendar({ activePrograms }: { activePrograms: an
     useEffect(() => {
         const todayStr = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD
         const hasEventToday = events.some(e => e.dateStr === todayStr);
+
         if (!hasEventToday && events.length > 0) {
             const upcoming = events.find(e => e.date >= new Date(new Date().setHours(0,0,0,0)));
+
+            /* eslint-disable react-hooks/set-state-in-effect */
             if (upcoming) {
                 setSelectedDate(upcoming.date);
                 setCurrentDate(upcoming.date);
@@ -56,6 +60,7 @@ export default function ProgramCalendar({ activePrograms }: { activePrograms: an
                 setSelectedDate(events[events.length - 1].date);
                 setCurrentDate(events[events.length - 1].date);
             }
+            /* eslint-enable react-hooks/set-state-in-effect */
         }
     }, [events]);
 
