@@ -201,7 +201,7 @@ export default function ProgramCalendar({
                     </div>
                     <Link
                         href="/program"
-                        className="inline-flex rounded-xl border border-slate-200 bg-white px-6 py-3.5 font-semibold whitespace-nowrap text-slate-700 shadow-sm transition-all hover:-translate-y-[1px] hover:border-slate-300 hover:bg-slate-50"
+                        className="inline-flex rounded-xl border border-slate-200 bg-white px-6 py-3.5 font-semibold whitespace-nowrap text-slate-700 shadow-sm transition-all hover:-translate-y-px hover:border-slate-300 hover:bg-slate-50"
                     >
                         Lihat Semua Program
                     </Link>
@@ -209,7 +209,7 @@ export default function ProgramCalendar({
 
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
                     {/* Left Col: Calendar */}
-                    <div className="h-fit rounded-[2rem] border border-slate-200 bg-slate-50 p-6 shadow-sm sm:p-8 lg:col-span-5">
+                    <div className="h-fit rounded-4xl border border-slate-200 bg-slate-50 p-6 shadow-sm sm:p-8 lg:col-span-5">
                         <div className="mb-8 flex items-center justify-between px-2">
                             <h3 className="text-xl font-bold tracking-tight text-slate-900">
                                 {monthNames[currentDate.getMonth()]}{' '}
@@ -264,7 +264,7 @@ export default function ProgramCalendar({
 
                         <div className="flex-1 space-y-4">
                             {selectedEvents.length === 0 ? (
-                                <div className="flex h-full min-h-[300px] flex-col items-center justify-center rounded-[2rem] border border-dashed border-slate-200 bg-slate-50 p-8 text-center">
+                                <div className="flex h-full min-h-75 flex-col items-center justify-center rounded-4xl border border-dashed border-slate-200 bg-slate-50 p-8 text-center">
                                     <CalendarBlank
                                         weight="duotone"
                                         className="mb-4 h-12 w-12 text-slate-300"
@@ -281,7 +281,7 @@ export default function ProgramCalendar({
                                 selectedEvents.map((evt, idx) => (
                                     <div
                                         key={idx}
-                                        className="group flex flex-col gap-6 rounded-[2rem] border border-slate-200 bg-white p-6 transition-all duration-300 hover:border-blue-200 hover:shadow-lg sm:flex-row sm:p-8"
+                                        className="group flex flex-col gap-6 rounded-4xl border border-slate-200 bg-white p-6 transition-all duration-300 hover:border-blue-200 hover:shadow-lg sm:flex-row sm:p-8"
                                     >
                                         <div className="flex-1">
                                             <div className="mb-4 flex items-center gap-3">
@@ -313,7 +313,7 @@ export default function ProgramCalendar({
                                         <div className="flex items-center justify-start border-t border-slate-100 pt-6 sm:w-auto sm:justify-end sm:border-t-0 sm:border-l sm:pt-0 sm:pl-8">
                                             <Link
                                                 href={`/program?id=${evt.programId}`}
-                                                className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-6 py-3.5 font-semibold whitespace-nowrap text-white shadow-sm transition-all hover:-translate-y-[1px] hover:bg-slate-800"
+                                                className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-6 py-3.5 font-semibold whitespace-nowrap text-white shadow-sm transition-all hover:-translate-y-px hover:bg-slate-800"
                                             >
                                                 Lihat Program
                                             </Link>

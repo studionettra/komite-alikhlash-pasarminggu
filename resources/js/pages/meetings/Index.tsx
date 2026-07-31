@@ -232,7 +232,7 @@ export default function MeetingsIndex({ meetings }: { meetings: any }) {
                                     </label>
 
                                     <div
-                                        className={`flex min-h-[46px] w-full cursor-text flex-wrap items-center gap-2 rounded-xl border bg-slate-50 px-3 py-2 transition-colors hover:bg-white ${isDropdownOpen ? 'border-blue-500 ring-2 ring-blue-500/20' : 'border-slate-300'}`}
+                                        className={`flex min-h-11.5 w-full cursor-text flex-wrap items-center gap-2 rounded-xl border bg-slate-50 px-3 py-2 transition-colors hover:bg-white ${isDropdownOpen ? 'border-blue-500 ring-2 ring-blue-500/20' : 'border-slate-300'}`}
                                         onClick={() => setIsDropdownOpen(true)}
                                     >
                                         {selectedAttendees.length === 0 && (
@@ -467,7 +467,7 @@ export default function MeetingsIndex({ meetings }: { meetings: any }) {
                                             className="group relative pl-6 sm:pl-10"
                                         >
                                             {/* Timeline dot */}
-                                            <div className="absolute top-1.5 -left-[11px] flex h-5 w-5 items-center justify-center rounded-full border-4 border-white bg-blue-100 shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:bg-blue-500 sm:-left-[11px]">
+                                            <div className="absolute top-1.5 -left-2.75 flex h-5 w-5 items-center justify-center rounded-full border-4 border-white bg-blue-100 shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:bg-blue-500 sm:-left-2.75">
                                                 <div className="h-1.5 w-1.5 rounded-full bg-blue-600 group-hover:bg-white"></div>
                                             </div>
 
