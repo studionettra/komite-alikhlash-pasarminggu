@@ -24,6 +24,11 @@ class Alert
         self::flash('warning', $title, $message);
     }
 
+    public static function deleteSuccess(string $title, string $message = ''): void
+    {
+        self::flash('delete-success', $title, $message);
+    }
+
     protected static function flash(string $type, string $title, string $message): void
     {
         session()->flash('alert', [

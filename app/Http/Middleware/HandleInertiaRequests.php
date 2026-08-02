@@ -43,6 +43,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'flash' => [
                 'alert' => $request->session()->get('alert'),
+                'spreadsheet_url' => $request->session()->get('spreadsheet_url'),
             ],
         ];
     }
