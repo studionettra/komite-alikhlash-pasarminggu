@@ -14,7 +14,7 @@ import {
 } from '@phosphor-icons/react';
 import { useState, useRef } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
-import { confirmDelete } from '../../utils/confirmToast';
+import { confirmDelete } from '../../utils/alertManager';
 
 function ActivityCard({ activity, programId, canManageProgram }: any) {
     const fileInputRef = useRef<HTMLInputElement>(null);

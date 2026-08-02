@@ -23,3 +23,13 @@ a[href*='elfsight'],
     height: 0 !important;
     pointer-events: none !important;
 }
+
+/* Global rule to restore cursor: pointer for buttons and labels in Tailwind v4 */
+button,
+[type='button'],
+[type='reset'],
+[type='submit'],
+[role='button'],
+label {
+    cursor: pointer;
+}

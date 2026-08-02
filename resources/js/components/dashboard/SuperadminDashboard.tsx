@@ -18,7 +18,7 @@ export default function SuperadminDashboard({
             <h2 className="px-1 text-lg font-semibold text-slate-900">
                 Ringkasan Aktivitas Komite
             </h2>
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                 <div className="group relative overflow-hidden rounded-2xl border border-slate-200/60 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                     <div className="pointer-events-none absolute top-0 right-0 -mt-8 -mr-8 h-32 w-32 rounded-bl-full bg-emerald-50 opacity-50 transition-transform duration-500 group-hover:scale-110"></div>
                     <div className="relative z-10 mb-4 flex items-start justify-between">
@@ -59,6 +59,31 @@ export default function SuperadminDashboard({
                     </div>
                     <div className="text-3xl font-semibold tracking-tight text-slate-900">
                         {metrics?.meetings || 0}
+                    </div>
+                </div>
+
+                <div className="group rounded-2xl border border-slate-200/60 bg-gradient-to-br from-slate-800 to-slate-900 p-6 text-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                    <div className="mb-4 flex items-start justify-between">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 text-white backdrop-blur-sm">
+                            <Users weight="duotone" className="h-6 w-6" />
+                        </div>
+                    </div>
+                    <div className="mb-2 text-sm font-medium text-slate-300">
+                        Aksi Cepat Superadmin
+                    </div>
+                    <div className="flex flex-col gap-2 mt-4">
+                        <Link
+                            href="/admin/classrooms"
+                            className="inline-flex items-center justify-between rounded-lg bg-white/10 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/20"
+                        >
+                            Kelola Kelas & Korlas <ArrowUpRight weight="bold" />
+                        </Link>
+                        <Link
+                            href="/users"
+                            className="inline-flex items-center justify-between rounded-lg bg-white/10 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/20"
+                        >
+                            Kelola Pengguna <ArrowUpRight weight="bold" />
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -91,7 +91,7 @@ class UserController extends Controller
         }
 
         $user->delete();
-        Alert::success('Berhasil', 'Pengguna dihapus.');
+        Alert::deleteSuccess('Berhasil', 'Pengguna dihapus.');
 
         return back();
     }

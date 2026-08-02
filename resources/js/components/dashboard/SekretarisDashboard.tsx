@@ -4,6 +4,7 @@ import {
     Users,
     FileText,
     CalendarBlank,
+    ArrowUpRight,
 } from '@phosphor-icons/react';
 
 export default function SekretarisDashboard({
@@ -16,7 +17,7 @@ export default function SekretarisDashboard({
             <h2 className="px-1 text-lg font-semibold text-slate-900">
                 Ringkasan Administratif
             </h2>
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                 <div className="group rounded-2xl border border-slate-200/60 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                     <div className="mb-4 flex items-start justify-between">
                         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
@@ -56,6 +57,31 @@ export default function SekretarisDashboard({
                     </div>
                     <div className="text-3xl font-semibold tracking-tight text-slate-900">
                         {metrics?.documents || 0}
+                    </div>
+                </div>
+
+                <div className="group rounded-2xl border border-slate-200/60 bg-gradient-to-br from-slate-800 to-slate-900 p-6 text-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                    <div className="mb-4 flex items-start justify-between">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 text-white backdrop-blur-sm">
+                            <FileText weight="duotone" className="h-6 w-6" />
+                        </div>
+                    </div>
+                    <div className="mb-2 text-sm font-medium text-slate-300">
+                        Aksi Cepat Sekretaris
+                    </div>
+                    <div className="flex flex-col gap-2 mt-4">
+                        <Link
+                            href="/meetings"
+                            className="inline-flex items-center justify-between rounded-lg bg-white/10 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/20"
+                        >
+                            Buat Notulensi Rapat <ArrowUpRight weight="bold" />
+                        </Link>
+                        <Link
+                            href="/programs"
+                            className="inline-flex items-center justify-between rounded-lg bg-white/10 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/20"
+                        >
+                            Kelola Program Kerja <ArrowUpRight weight="bold" />
+                        </Link>
                     </div>
                 </div>
             </div>

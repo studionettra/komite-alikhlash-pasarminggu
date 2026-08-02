@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Alert;
 use App\Models\Program;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -24,17 +25,17 @@ class ProgramController extends Controller
     public function show(Program $program)
     {
         $program->load([
-            'documents' => fn($q) => $q->whereNull('program_activity_id'),
-            'transactions' => fn($q) => $q->whereNull('program_activity_id'),
-            'users', 
-            'activities' => fn($q) => $q->orderBy('activity_date', 'desc'),
-            'activities.documents', 
-            'activities.transactions'
+            'documents' => fn ($q) => $q->whereNull('program_activity_id'),
+            'transactions' => fn ($q) => $q->whereNull('program_activity_id'),
+            'users',
+            'activities' => fn ($q) => $q->orderBy('activity_date', 'desc'),
+            'activities.documents',
+            'activities.transactions',
         ]);
-        
+
         // Calculate totals for this program
-        $income = \App\Models\Transaction::where('program_id', $program->id)->where('type', 'income')->sum('amount');
-        $expense = \App\Models\Transaction::where('program_id', $program->id)->where('type', 'expense')->sum('amount');
+        $income = Transaction::where('program_id', $program->id)->where('type', 'income')->sum('amount');
+        $expense = Transaction::where('program_id', $program->id)->where('type', 'expense')->sum('amount');
 
         return Inertia::render('programs/Show', [
             'program' => $program,
@@ -42,7 +43,7 @@ class ProgramController extends Controller
                 'income' => $income,
                 'expense' => $expense,
                 'balance' => $income - $expense,
-            ]
+            ],
         ]);
     }
 
@@ -60,7 +61,7 @@ class ProgramController extends Controller
         ]);
 
         $program = Program::create($validated);
-        
+
         if ($request->has('assigned_users')) {
             $program->users()->sync($request->assigned_users);
         }
@@ -83,7 +84,7 @@ class ProgramController extends Controller
         ]);
 
         $program->update($validated);
-        
+
         if ($request->has('assigned_users')) {
             $program->users()->sync($request->assigned_users);
         }
@@ -96,21 +97,24 @@ class ProgramController extends Controller
     {
         if ($program->transactions()->exists()) {
             Alert::error('Gagal', 'Program tidak dapat dihapus karena masih memiliki riwayat transaksi keuangan. Hapus transaksi terlebih dahulu.');
+
             return back();
         }
 
         if ($program->documents()->exists()) {
             Alert::error('Gagal', 'Program tidak dapat dihapus karena masih memiliki lampiran dokumen/laporan. Hapus laporan terlebih dahulu.');
+
             return back();
         }
 
         if ($program->activities()->exists()) {
             Alert::error('Gagal', 'Program tidak dapat dihapus karena masih memiliki sesi program. Hapus sesi program terlebih dahulu.');
+
             return back();
         }
 
         $program->delete();
-        Alert::success('Berhasil', 'Program kerja dihapus.');
+        Alert::deleteSuccess('Berhasil', 'Program kerja dihapus.');
 
         return back();
     }

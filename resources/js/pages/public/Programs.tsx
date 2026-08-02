@@ -55,12 +55,14 @@ export default function Programs({ programs }: any) {
             );
         }
 
-        // Sort activities by date ASC for timeline
-        const sortedActivities = [...program.activities].sort(
-            (a: any, b: any) =>
-                new Date(a.activity_date).getTime() -
-                new Date(b.activity_date).getTime(),
-        );
+        // Sort activities by date ASC for timeline and assign global index
+        const sortedActivities = [...program.activities]
+            .sort(
+                (a: any, b: any) =>
+                    new Date(a.activity_date).getTime() -
+                    new Date(b.activity_date).getTime(),
+            )
+            .map((act, index) => ({ ...act, globalIndex: index + 1 }));
 
         // Group by month
         const grouped: { [key: string]: any[] } = {};
@@ -93,14 +95,14 @@ export default function Programs({ programs }: any) {
                             {monthYear}
                         </div>
                         <div className="divide-y divide-slate-100">
-                            {activities.map((act: any, idx: number) => (
+                            {activities.map((act: any) => (
                                 <div
                                     key={act.id}
                                     className="flex flex-col justify-between gap-4 p-5 transition-colors hover:bg-slate-50 sm:flex-row sm:items-center"
                                 >
-                                    <div className="flex items-start gap-4">
+                                    <div className="flex items-center gap-4">
                                         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-blue-100 bg-blue-50 text-sm font-bold text-blue-600 shadow-sm">
-                                            {idx + 1}
+                                            {act.globalIndex}
                                         </div>
                                         <div>
                                             <h4 className="text-base leading-snug font-bold text-slate-900">

@@ -4,7 +4,7 @@ import appLogo from '../../../images/logo/logo-komite-alikhlash-jatipadang.png';
 import PublicLayout from '../../layouts/PublicLayout';
 
 export default function Login() {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors, setError, clearErrors } = useForm({
         email: '',
         password: '',
         remember: false,
@@ -12,6 +12,24 @@ export default function Login() {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+        
+        clearErrors();
+        let hasError = false;
+
+        if (!data.email) {
+            setError('email', 'Email wajib diisi untuk login.');
+            hasError = true;
+        }
+
+        if (!data.password) {
+            setError('password', 'Password wajib diisi untuk login.');
+            hasError = true;
+        }
+
+        if (hasError) {
+            return;
+        }
+
         post('/login');
     };
 
@@ -34,14 +52,14 @@ export default function Login() {
                         </p>
                     </div>
 
-                    <form onSubmit={submit} className="space-y-6">
+                    <form onSubmit={submit} className="space-y-6" noValidate>
                         {errors.email && (
                             <div className="flex items-start gap-3 rounded-lg border border-red-100 bg-red-50 p-4 text-sm text-red-600">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 20 20"
                                     fill="currentColor"
-                                    className="mt-0.5 h-5 w-5 flex-shrink-0"
+                                    className="mt-0.5 h-5 w-5 shrink-0"
                                 >
                                     <path
                                         fillRule="evenodd"

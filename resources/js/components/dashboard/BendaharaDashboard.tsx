@@ -11,7 +11,7 @@ export default function BendaharaDashboard({
             <h2 className="px-1 text-lg font-semibold text-slate-900">
                 Ringkasan Keuangan
             </h2>
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                 <div className="group relative overflow-hidden rounded-2xl border border-slate-200/60 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg lg:col-span-1">
                     <div className="pointer-events-none absolute top-0 right-0 -mt-8 -mr-8 h-32 w-32 rounded-bl-full bg-emerald-50 opacity-50 transition-transform duration-500 group-hover:scale-110"></div>
                     <div className="relative z-10 mb-4 flex items-start justify-between">
@@ -58,6 +58,32 @@ export default function BendaharaDashboard({
                     </div>
                     <div className="text-3xl font-semibold tracking-tight text-slate-900">
                         {formatRupiah(metrics?.expense_month || 0)}
+                    </div>
+                </div>
+                <div className="group rounded-2xl border border-slate-200/60 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                    <div className="mb-4 flex items-start justify-between">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+                            <Wallet weight="duotone" className="h-6 w-6" />
+                        </div>
+                        {metrics?.pending_collections > 0 && (
+                            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-rose-500 text-xs font-bold text-white animate-pulse">
+                                {metrics.pending_collections}
+                            </span>
+                        )}
+                    </div>
+                    <div className="mb-1 text-sm font-medium text-slate-500">
+                        Setoran Menunggu Verifikasi
+                    </div>
+                    <div className="text-3xl font-semibold tracking-tight text-slate-900">
+                        {metrics?.pending_collections || 0}
+                    </div>
+                    <div className="mt-4">
+                        <Link
+                            href="/admin/collections"
+                            className="inline-flex items-center gap-1.5 text-sm font-semibold text-amber-600 transition-colors hover:text-amber-700"
+                        >
+                            Cek Setoran <ArrowUpRight weight="bold" />
+                        </Link>
                     </div>
                 </div>
             </div>

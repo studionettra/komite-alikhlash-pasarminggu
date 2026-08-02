@@ -38,7 +38,7 @@ class RoleController extends Controller
         }
 
         $role->delete();
-        Alert::success('Berhasil', 'Role dihapus.');
+        Alert::deleteSuccess('Berhasil', 'Role dihapus.');
 
         return back();
     }

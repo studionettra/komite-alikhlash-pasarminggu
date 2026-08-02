@@ -1,4 +1,4 @@
-import { Head, router } from '@inertiajs/react';
+import { Head, router, Link } from '@inertiajs/react';
 import { useState } from 'react';
 import Select from '../../components/ui/Select';
 import PublicLayout from '../../layouts/PublicLayout';
@@ -51,7 +51,7 @@ export default function Finance({
                 </div>
             </section>
 
-            <section className="-mt-16 py-12">
+            <section className="py-16">
                 <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                     <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-3">
                         <div className="flex flex-col justify-center rounded-3xl border border-slate-100 bg-white p-8 shadow-xl shadow-slate-200/50">
@@ -62,7 +62,7 @@ export default function Finance({
                                 {formatRupiah(summary.balance)}
                             </p>
                         </div>
-                        <div className="flex flex-col justify-center rounded-3xl border border-green-100 bg-gradient-to-br from-green-50 to-emerald-50 p-8 shadow-lg shadow-green-900/5">
+                        <div className="flex flex-col justify-center rounded-3xl border border-green-100 bg-linear-to-br from-green-50 to-emerald-50 p-8 shadow-lg shadow-green-900/5">
                             <p className="mb-2 text-sm font-bold tracking-wider text-green-700 uppercase">
                                 Total Pemasukan
                             </p>
@@ -70,7 +70,7 @@ export default function Finance({
                                 {formatRupiah(summary.income)}
                             </p>
                         </div>
-                        <div className="flex flex-col justify-center rounded-3xl border border-red-100 bg-gradient-to-br from-red-50 to-rose-50 p-8 shadow-lg shadow-red-900/5">
+                        <div className="flex flex-col justify-center rounded-3xl border border-red-100 bg-linear-to-br from-red-50 to-rose-50 p-8 shadow-lg shadow-red-900/5">
                             <p className="mb-2 text-sm font-bold tracking-wider text-red-700 uppercase">
                                 Total Pengeluaran
                             </p>
@@ -85,11 +85,11 @@ export default function Finance({
                             <h2 className="text-xl font-bold text-slate-900">
                                 Rincian Transaksi
                             </h2>
-                            <div className="flex w-full items-center gap-3 sm:w-auto">
-                                <span className="text-sm font-semibold whitespace-nowrap text-slate-500">
+                            <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
+                                <span className="text-sm font-semibold text-slate-500">
                                     Filter:
                                 </span>
-                                <div className="w-full sm:w-72">
+                                <div className="w-full sm:w-80">
                                     <Select
                                         value={selectedProgram}
                                         onChange={handleFilterChange}
@@ -100,7 +100,7 @@ export default function Finance({
                                             },
                                             ...programs.map((p: any) => ({
                                                 value: p.id,
-                                                label: `Program: ${p.title}`,
+                                                label: p.title,
                                             })),
                                         ]}
                                     />
@@ -208,12 +208,40 @@ export default function Finance({
                                 </tbody>
                             </table>
                         </div>
-                        <div className="flex items-center justify-between border-t border-slate-100 bg-slate-50 px-8 py-5 text-sm text-slate-500">
-                            <span>
+                        <div className="flex flex-col items-center justify-between gap-4 border-t border-slate-100 bg-slate-50 px-8 py-5 text-sm text-slate-500 sm:flex-row">
+                            <div>
                                 Halaman {transactions.current_page} dari{' '}
-                                {transactions.last_page}
-                            </span>
-                            <span>Total Data: {transactions.total}</span>
+                                {transactions.last_page} (Total Data: {transactions.total})
+                            </div>
+
+                            {transactions.last_page > 1 && (
+                                <div className="flex flex-wrap items-center justify-center gap-1">
+                                    {transactions.links.map((link: any, index: number) => {
+                                        const label = link.label
+                                            .replace('&laquo; Previous', '«')
+                                            .replace('Next &raquo;', '»');
+
+                                        return link.url ? (
+                                            <Link
+                                                key={index}
+                                                href={link.url}
+                                                className={`flex h-8 min-w-8 items-center justify-center rounded-lg border px-2 text-sm font-medium transition-colors ${
+                                                    link.active
+                                                        ? 'border-blue-600 bg-blue-600 text-white'
+                                                        : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-100'
+                                                }`}
+                                                dangerouslySetInnerHTML={{ __html: label }}
+                                            />
+                                        ) : (
+                                            <span
+                                                key={index}
+                                                className="flex h-8 min-w-8 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 px-2 text-sm font-medium text-slate-400"
+                                                dangerouslySetInnerHTML={{ __html: label }}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

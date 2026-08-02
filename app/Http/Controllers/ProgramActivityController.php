@@ -45,16 +45,18 @@ class ProgramActivityController extends Controller
     {
         if ($programActivity->transactions()->exists()) {
             Alert::error('Gagal', 'Sesi program tidak dapat dihapus karena masih memiliki riwayat transaksi keuangan. Hapus transaksi terlebih dahulu.');
+
             return back();
         }
 
         if ($programActivity->documents()->exists()) {
             Alert::error('Gagal', 'Sesi program tidak dapat dihapus karena masih memiliki lampiran dokumen/laporan. Hapus laporan terlebih dahulu.');
+
             return back();
         }
 
         $programActivity->delete();
-        Alert::success('Berhasil', 'Sesi program dihapus.');
+        Alert::deleteSuccess('Berhasil', 'Sesi program dihapus.');
 
         return back();
     }

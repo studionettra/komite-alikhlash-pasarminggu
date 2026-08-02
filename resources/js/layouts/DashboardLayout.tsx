@@ -9,12 +9,15 @@ import {
     SignOut,
     List,
     X,
+    CalendarBlank,
+    Gear,
 } from '@phosphor-icons/react';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import appLogo from '../../images/logo/logo-komite-alikhlash-jatipadang.png';
 import FlashMessage from '../components/FlashMessage';
+import GlobalAlertModal from '../components/GlobalAlertModal';
 
 const NavLink = ({ href, icon: Icon, children, pathname, onClick }: any) => {
     const isActive = pathname.startsWith(href);
@@ -47,6 +50,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         <div className="flex min-h-screen flex-col bg-slate-50 font-sans antialiased md:flex-row">
             <Toaster position="top-right" />
             <FlashMessage />
+            <GlobalAlertModal />
 
             {/* Mobile Overlay */}
             {isSidebarOpen && (
@@ -100,6 +104,14 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                         Program Kerja
                     </NavLink>
                     <NavLink
+                        href="/academic-calendar"
+                        icon={CalendarBlank}
+                        pathname={pathname}
+                        onClick={closeSidebar}
+                    >
+                        Kalender Akademik
+                    </NavLink>
+                    <NavLink
                         href="/meetings"
                         icon={Users}
                         pathname={pathname}
@@ -116,6 +128,53 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                         Keuangan
                     </NavLink>
 
+                    {(auth?.user?.roles?.[0]?.name === 'Superadmin' || auth?.user?.roles?.[0]?.name === 'Bendahara') && (
+                        <>
+                            <NavLink
+                                href="/admin/collections"
+                                icon={ShieldCheck}
+                                pathname={pathname}
+                                onClick={closeSidebar}
+                            >
+                                Verifikasi Setoran
+                            </NavLink>
+                            <NavLink
+                                href="/settings"
+                                icon={Gear}
+                                pathname={pathname}
+                                onClick={closeSidebar}
+                            >
+                                Pengaturan
+                            </NavLink>
+                        </>
+                    )}
+
+                    {(auth?.user?.roles?.[0]?.name === 'Superadmin' || auth?.user?.roles?.[0]?.name === 'Korlas') && (
+                        <>
+                            <div className="px-4 pt-6 pb-2">
+                                <p className="text-xs font-semibold tracking-wider text-slate-500 uppercase">
+                                    Menu Korlas
+                                </p>
+                            </div>
+                            <NavLink
+                                href="/korlas/students"
+                                icon={Users}
+                                pathname={pathname}
+                                onClick={closeSidebar}
+                            >
+                                Data Siswa
+                            </NavLink>
+                            <NavLink
+                                href="/korlas/collections"
+                                icon={Wallet}
+                                pathname={pathname}
+                                onClick={closeSidebar}
+                            >
+                                Setoran Kelas
+                            </NavLink>
+                        </>
+                    )}
+
                     {auth?.user?.roles?.[0]?.name === 'Superadmin' && (
                         <>
                             <div className="px-4 pt-6 pb-2">
@@ -131,6 +190,14 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                                 onClick={closeSidebar}
                             >
                                 Pengguna
+                            </NavLink>
+                            <NavLink
+                                href="/admin/classrooms"
+                                icon={Users}
+                                pathname={pathname}
+                                onClick={closeSidebar}
+                            >
+                                Data Kelas
                             </NavLink>
                             <NavLink
                                 href="/roles"

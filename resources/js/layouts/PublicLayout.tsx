@@ -1,5 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
 import { House, Users, Briefcase, Wallet, SignIn } from '@phosphor-icons/react';
+import { Toaster } from 'react-hot-toast';
 import appLogo from '../../images/logo/logo-komite-alikhlash-jatipadang.png';
 import FlashMessage from '../components/FlashMessage';
 
@@ -15,6 +16,7 @@ export default function PublicLayout({
 
     return (
         <div className="flex min-h-screen flex-col bg-slate-50 font-sans text-slate-900 selection:bg-blue-200 selection:text-blue-900">
+            <Toaster position="top-right" />
             <FlashMessage />
 
             {/* Navbar */}
@@ -36,7 +38,7 @@ export default function PublicLayout({
                                 <span className="mb-1 text-[8.5px] leading-none font-bold tracking-widest text-slate-500 uppercase sm:text-[10px]">
                                     Komite KBIT-TKIT
                                 </span>
-                                <span className="bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-[11px] leading-none font-extrabold whitespace-nowrap text-transparent transition-all duration-300 group-hover:to-blue-600 sm:text-sm">
+                                <span className="bg-linear-to-r from-slate-900 to-slate-700 bg-clip-text text-[11px] leading-none font-extrabold whitespace-nowrap text-transparent transition-all duration-300 group-hover:to-blue-600 sm:text-sm">
                                     Al-Ikhlash Pasar Minggu
                                 </span>
                             </div>
@@ -111,7 +113,7 @@ export default function PublicLayout({
                 }}
             >
                 <nav className="pointer-events-auto overflow-hidden rounded-[1.25rem] border border-white/60 bg-white/75 shadow-2xl shadow-slate-300/40 backdrop-blur-xl">
-                    <div className="flex h-[4.25rem] items-center justify-around px-1">
+                    <div className="flex h-17 items-center justify-around px-1">
                         <Link
                             href="/"
                             className={`flex h-full w-full flex-col items-center justify-center space-y-1 ${url === '/' ? 'text-blue-600' : 'text-slate-400 hover:text-slate-600'}`}
@@ -172,9 +174,9 @@ export default function PublicLayout({
                         </Link>
                         <Link
                             href="/login"
-                            className="flex h-full w-full flex-col items-center justify-center space-y-1 text-slate-400 hover:text-slate-600"
+                            className={`flex h-full w-full flex-col items-center justify-center space-y-1 ${url === '/login' ? 'text-blue-600' : 'text-slate-400 hover:text-slate-600'}`}
                         >
-                            <SignIn size={24} weight="regular" />
+                            <SignIn size={24} weight={url === '/login' ? 'fill' : 'regular'} />
                             <span className="text-[10px] font-medium">
                                 Login
                             </span>

@@ -4,7 +4,7 @@ import type { FormEventHandler } from 'react';
 import { useState } from 'react';
 import Select from '../../components/ui/Select';
 import DashboardLayout from '../../layouts/DashboardLayout';
-import { confirmDelete } from '../../utils/confirmToast';
+import { confirmDelete } from '../../utils/alertManager';
 
 export default function UsersIndex({
     users,

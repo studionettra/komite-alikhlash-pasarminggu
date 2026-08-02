@@ -26,7 +26,8 @@ class AuthController extends Controller
 
             Alert::success('Berhasil Login', 'Selamat datang di Dashboard Komite');
 
-            return redirect()->intended('dashboard');
+            // Force full page reload to clear Inertia history state across auth boundaries
+            return Inertia::location(session()->pull('url.intended', route('dashboard')));
         }
 
         return back()->withErrors([
@@ -41,8 +42,9 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        Alert::info('Logout Berhasil', 'Anda telah keluar dari sistem.');
+        Alert::success('Logout Berhasil', 'Anda telah keluar dari sistem.');
 
-        return redirect('/login');
+        // Force full page reload to clear Inertia history state
+        return Inertia::location(route('login'));
     }
 }

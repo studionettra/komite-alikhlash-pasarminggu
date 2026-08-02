@@ -2,7 +2,7 @@ import { Head, useForm, router } from '@inertiajs/react';
 import { Trash } from '@phosphor-icons/react';
 import type { FormEventHandler } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
-import { confirmDelete } from '../../utils/confirmToast';
+import { confirmDelete } from '../../utils/alertManager';
 
 export default function RolesIndex({ roles }: { roles: any[] }) {
     const { data, setData, post, processing, errors, reset } = useForm({

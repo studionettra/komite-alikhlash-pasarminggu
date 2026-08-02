@@ -188,7 +188,7 @@ export default function ProgramCalendar({
 
     return (
         <section className="relative border-t border-slate-100 bg-white py-24">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                 <div className="mb-12 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
                     <div className="max-w-2xl">
                         <h2 className="text-3xl font-bold tracking-tight text-slate-900">
@@ -323,6 +323,16 @@ export default function ProgramCalendar({
                             )}
                         </div>
                     </div>
+                </div>
+
+                <div className="mx-auto mt-12 flex justify-center border-t border-slate-100 pt-8">
+                    <Link
+                        href="/kalender-akademik"
+                        className="inline-flex items-center gap-2 rounded-xl bg-blue-50 px-6 py-3.5 font-semibold text-blue-700 transition-all hover:bg-blue-100"
+                    >
+                        <CalendarBlank weight="bold" className="h-5 w-5" />
+                        Lihat Seluruh Kalender Akademik
+                    </Link>
                 </div>
             </div>
         </section>
