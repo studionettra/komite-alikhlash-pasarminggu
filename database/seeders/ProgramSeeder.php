@@ -21,8 +21,8 @@ class ProgramSeeder extends Seeder
                 'start_date' => null,
             ],
             [
-                'title' => 'Jumat Berkah',
-                'description' => 'Program Jumat Berkah rutin.',
+                'title' => 'Jumat Berbagi',
+                'description' => 'Program Jumat Berbagi rutin.',
                 'frequency' => 'monthly',
                 'status' => 'planned',
                 'start_date' => null,

@@ -53,7 +53,7 @@ export default function AdminCollectionsShow({ collection }: { collection: any }
                                     <tr>
                                         <th scope="col" className="px-6 py-3 text-left text-xs font-bold tracking-wider text-slate-500 uppercase">Siswa</th>
                                         <th scope="col" className="px-6 py-3 text-right text-xs font-bold tracking-wider text-slate-500 uppercase">Uang Kas</th>
-                                        <th scope="col" className="px-6 py-3 text-right text-xs font-bold tracking-wider text-slate-500 uppercase">Jumat Berkah</th>
+                                        <th scope="col" className="px-6 py-3 text-right text-xs font-bold tracking-wider text-slate-500 uppercase">Jumat Berbagi</th>
                                         <th scope="col" className="px-6 py-3 text-center text-xs font-bold tracking-wider text-slate-500 uppercase">Status</th>
                                     </tr>
                                 </thead>
@@ -87,7 +87,7 @@ export default function AdminCollectionsShow({ collection }: { collection: any }
                                 <span className="font-semibold text-slate-800">{formatCurrency(collection.total_kas)}</span>
                             </div>
                             <div className="flex items-center justify-between text-sm">
-                                <span className="text-slate-500">Total Jumat Berkah</span>
+                                <span className="text-slate-500">Total Jumat Berbagi</span>
                                 <span className="font-semibold text-slate-800">{formatCurrency(collection.total_jumat_berkah)}</span>
                             </div>
                             <div className="border-t border-slate-100 pt-3">

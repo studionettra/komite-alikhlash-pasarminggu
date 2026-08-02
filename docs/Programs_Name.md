@@ -2,11 +2,9 @@ Daftar Program Bersama Komite
 
 
 Nama Program | Kategori | Status | Waktu Pelaksanaan
-Kas Umum / Belum Terikat 
-Jumat Berkah | Bulanan | Akan Datang 
+Jumat Berbagi | Bulanan | Akan Datang 
 Lomba HUT RI ke 81 | Insidental | Akan Datang | 18 Agustus 2026
 Makan Sehat Bersama | Insidenta | Akan Datang 
-Sumbangan Kesehatan 
 Renang | Bulanan | Akan Datang | 
 Market Day | Insidental | Akan Datang | 24 September 2026
 Peringatan Hari Guru | Insidental | Akan Datang | 25 November 2026

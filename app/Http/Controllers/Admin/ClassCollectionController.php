@@ -56,14 +56,17 @@ class ClassCollectionController extends Controller
                 ]);
             }
 
-            // Buat transaksi untuk jumat berkah
+            // Buat transaksi untuk jumat berbagi
             if ($collection->total_jumat_berkah > 0) {
-                Transaction::create([
-                    'type' => 'income',
-                    'amount' => $collection->total_jumat_berkah,
-                    'description' => "Donasi Jumat Berkah - Kelas {$collection->classroom->name} - Bulan {$collection->month}/{$collection->year}",
-                    'date' => now(),
-                ]);
+                $jumatBerbagiProgram = Program::where('title', 'like', '%Jumat Berbagi%')->first();
+                if ($jumatBerbagiProgram) {
+                    Transaction::create([
+                        'program_id' => $jumatBerbagiProgram->id,
+                        'amount' => $collection->total_jumat_berkah,
+                        'description' => "Donasi Jumat Berbagi - Kelas {$collection->classroom->name} - Bulan {$collection->month}/{$collection->year}",
+                        'date' => now(),
+                    ]);
+                }
             }
         });
 

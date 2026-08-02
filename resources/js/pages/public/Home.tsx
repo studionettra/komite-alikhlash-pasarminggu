@@ -1,5 +1,18 @@
 import { Head, Link } from '@inertiajs/react';
 import { useEffect } from 'react';
+import { 
+    Heart, 
+    Trophy, 
+    BowlFood, 
+    PersonSimpleSwim, 
+    Storefront, 
+    ChalkboardTeacher, 
+    UsersThree, 
+    Handshake, 
+    Tree, 
+    GraduationCap, 
+    CalendarBlank 
+} from '@phosphor-icons/react';
 import ProgramCalendar from '../../components/public/ProgramCalendar';
 import PublicLayout from '../../layouts/PublicLayout';
 
@@ -76,6 +89,26 @@ export default function Home({ heroProgram, activePrograms, upcomingSessions }: 
         };
     }, []);
 
+    const getProgramIcon = (title: string) => {
+        if (!title) return <CalendarBlank weight="fill" className="h-28 w-28 text-slate-100 transition-colors duration-500 group-hover:text-blue-100 absolute -bottom-6 -right-6 z-0" />;
+        
+        const t = title.toLowerCase();
+        const iconClass = "h-28 w-28 text-slate-100 transition-colors duration-500 group-hover:text-blue-100 absolute -bottom-6 -right-6 z-0 rotate-[-10deg]";
+        
+        if (t.includes('berbagi')) return <Heart weight="fill" className={iconClass} />;
+        if (t.includes('lomba') || t.includes('hut')) return <Trophy weight="fill" className={iconClass} />;
+        if (t.includes('makan')) return <BowlFood weight="fill" className={iconClass} />;
+        if (t.includes('renang')) return <PersonSimpleSwim weight="fill" className={iconClass} />;
+        if (t.includes('market')) return <Storefront weight="fill" className={iconClass} />;
+        if (t.includes('guru')) return <ChalkboardTeacher weight="fill" className={iconClass} />;
+        if (t.includes('gathering')) return <UsersThree weight="fill" className={iconClass} />;
+        if (t.includes('halal')) return <Handshake weight="fill" className={iconClass} />;
+        if (t.includes('piknik')) return <Tree weight="fill" className={iconClass} />;
+        if (t.includes('pelepasan') || t.includes('seni')) return <GraduationCap weight="fill" className={iconClass} />;
+        
+        return <CalendarBlank weight="fill" className={iconClass} />;
+    };
+
     return (
         <PublicLayout>
             <Head title="Beranda - Komite KBIT-TKIT Al-Ikhlash Pasar Minggu" />
@@ -86,13 +119,13 @@ export default function Home({ heroProgram, activePrograms, upcomingSessions }: 
                     {heroProgram ? (
                         <div className="flex flex-col items-center gap-12 lg:flex-row lg:gap-16">
                             {/* Text Content */}
-                            <div className="w-full lg:w-[70%] lg:pr-8">
+                            <div className="w-full lg:w-1/2">
                                 <div
                                     className={`mb-6 inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold tracking-wider uppercase ${heroProgram.status === 'ongoing' ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'}`}
                                 >
                                     {heroProgram.status === 'ongoing'
                                         ? 'Sedang Berlangsung'
-                                        : 'Program Utama'}
+                                        : 'Agenda Terdekat'}
                                 </div>
                                 <h1 className="mb-6 text-4xl leading-[1.15] font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
                                     {heroProgram.title}
@@ -108,64 +141,57 @@ export default function Home({ heroProgram, activePrograms, upcomingSessions }: 
                                     >
                                         Detail Program
                                     </Link>
-                                    {heroProgram.start_date && (
-                                        <div className="inline-flex items-center gap-2 px-4 py-3.5 font-medium text-slate-500">
-                                            <svg
-                                                className="h-5 w-5"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                                />
-                                            </svg>
-                                            {new Date(
-                                                heroProgram.start_date,
-                                            ).toLocaleDateString('id-ID', {
-                                                day: 'numeric',
-                                                month: 'long',
-                                                year: 'numeric',
-                                            })}
-                                        </div>
-                                    )}
+                                    {(() => {
+                                        const nearestSession = upcomingSessions?.find((s: any) => s.program_id === heroProgram.id);
+                                        const displayDate = nearestSession ? nearestSession.activity_date : heroProgram.start_date;
+
+                                        return displayDate ? (
+                                            <div className="inline-flex items-center gap-2 px-4 py-3.5 font-medium text-slate-500">
+                                                <svg
+                                                    className="h-5 w-5"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke="currentColor"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                                    />
+                                                </svg>
+                                                {new Date(
+                                                    displayDate,
+                                                ).toLocaleDateString('id-ID', {
+                                                    day: 'numeric',
+                                                    month: 'long',
+                                                    year: 'numeric',
+                                                })}
+                                            </div>
+                                        ) : null;
+                                    })()}
                                 </div>
                             </div>
-
-                            {/* Upcoming Sessions Content */}
-                            <div className="w-full lg:w-[30%]">
-                                <h3 className="mb-4 text-lg font-bold text-slate-800">Kegiatan Terdekat</h3>
-                                <div className="flex flex-col gap-3">
-                                    {upcomingSessions && upcomingSessions.length > 0 ? (
-                                        upcomingSessions.map((session: any) => (
-                                            <div key={session.id} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:shadow-md">
-                                                <div className="mb-2 flex items-center justify-between">
-                                                    <span className="inline-flex items-center rounded-lg bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700">
-                                                        {new Date(session.activity_date).toLocaleDateString('id-ID', {
-                                                            day: 'numeric',
-                                                            month: 'short'
-                                                        })}
-                                                    </span>
-                                                    {(session.start_time || session.end_time) && (
-                                                        <span className="text-xs font-medium text-slate-500">
-                                                            {session.start_time?.substring(0, 5) || ''} {session.end_time ? `- ${session.end_time.substring(0, 5)}` : ''}
-                                                        </span>
-                                                    )}
-                                                </div>
-                                                <h4 className="font-bold text-slate-900 leading-tight mb-1">{session.title}</h4>
-                                                {session.program && (
-                                                    <p className="text-xs font-medium text-slate-500 line-clamp-1">{session.program.title}</p>
-                                                )}
-                                            </div>
-                                        ))
+                            
+                            {/* Image Content */}
+                            <div className="w-full lg:w-1/2">
+                                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl bg-slate-200 shadow-2xl">
+                                    {heroProgram.image ? (
+                                        <img
+                                            src={`/storage/${heroProgram.image}`}
+                                            alt={heroProgram.title}
+                                            className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                                        />
                                     ) : (
-                                        <div className="rounded-2xl border border-dashed border-slate-200 bg-white/50 p-6 text-center">
-                                            <p className="text-sm font-medium text-slate-500">Belum ada jadwal kegiatan terdekat.</p>
+                                        <div className="flex h-full w-full items-center justify-center bg-blue-50 text-blue-200">
+                                            <svg className="h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
                                         </div>
                                     )}
+                                    {/* Decorative elements */}
+                                    <div className="absolute -bottom-6 -left-6 h-24 w-24 rounded-full bg-yellow-400/20 blur-2xl"></div>
+                                    <div className="absolute -top-6 -right-6 h-32 w-32 rounded-full bg-blue-400/20 blur-2xl"></div>
                                 </div>
                             </div>
                         </div>
@@ -183,6 +209,48 @@ export default function Home({ heroProgram, activePrograms, upcomingSessions }: 
                                 keuangan, dan ruang partisipasi secara terbuka
                                 dari Komite KBIT-TKIT Al-Ikhlash Pasar Minggu.
                             </p>
+                        </div>
+                    )}
+                    
+                    {/* Upcoming Sessions Content (Inside Hero Section) */}
+                    {upcomingSessions && upcomingSessions.length > 0 && (
+                        <div className="mt-20 pt-12 border-t border-slate-200/80">
+                            <div className="mb-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
+                                <div>
+                                    <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Kegiatan Terdekat</h2>
+                                    <p className="mt-2 text-slate-600">Jadwal sesi program yang akan datang</p>
+                                </div>
+                                <Link href="/program" className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700">
+                                    Lihat Semua Program <span aria-hidden="true">&rarr;</span>
+                                </Link>
+                            </div>
+                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                {upcomingSessions.map((session: any) => (
+                                    <div key={session.id} className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md hover:border-blue-300">
+                                        <div className="relative z-10">
+                                            <div className="mb-4 flex items-center justify-between">
+                                                <span className="inline-flex items-center rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-bold text-blue-700 transition-colors group-hover:bg-blue-100">
+                                                    {new Date(session.activity_date).toLocaleDateString('id-ID', {
+                                                        day: 'numeric',
+                                                        month: 'short',
+                                                        year: 'numeric'
+                                                    })}
+                                                </span>
+                                                {(session.start_time || session.end_time) && (
+                                                    <span className="text-xs font-semibold text-slate-500">
+                                                        {session.start_time?.substring(0, 5) || ''} {session.end_time ? `- ${session.end_time.substring(0, 5)}` : ''}
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <h4 className="mb-2 text-lg font-bold text-slate-900 leading-tight group-hover:text-blue-600 transition-colors">{session.title}</h4>
+                                            {session.program && (
+                                                <p className="text-sm font-medium text-slate-500 line-clamp-2">{session.program.title}</p>
+                                            )}
+                                        </div>
+                                        {getProgramIcon(session.program?.title || session.title)}
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     )}
                 </div>

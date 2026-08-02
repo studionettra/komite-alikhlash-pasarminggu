@@ -14,13 +14,38 @@ class HomeController extends Controller
     {
         $today = now()->setTimezone('Asia/Jakarta')->format('Y-m-d');
 
-        $heroProgram = Program::with('activities')->where('start_date', '<=', $today)
-            ->where(function ($q) use ($today) {
-                $q->where('end_date', '>=', $today)
-                    ->orWhereNull('end_date');
-            })->first()
-            ?? Program::with('activities')->where('start_date', '>', $today)->orderBy('start_date', 'asc')->first()
-            ?? Program::with('activities')->whereNotNull('start_date')->orderBy('start_date', 'asc')->first();
+        $upcomingSessions = ProgramActivity::with('program')
+            ->where('activity_date', '>=', $today)
+            ->where('status', '!=', 'cancelled')
+            ->orderBy('activity_date', 'asc')
+            ->orderBy('start_time', 'asc')
+            ->limit(3)
+            ->get();
+
+        $heroProgram = null;
+        if ($upcomingSessions->isNotEmpty()) {
+            $heroProgram = Program::with('activities')->find($upcomingSessions->first()->program_id);
+        }
+
+        if (!$heroProgram) {
+            $heroProgram = Program::with('activities')
+                ->where('start_date', '>=', $today)
+                ->orderBy('start_date', 'asc')
+                ->first();
+        }
+
+        if (!$heroProgram) {
+            $heroProgram = Program::with('activities')
+                ->where('start_date', '<=', $today)
+                ->where(function ($q) use ($today) {
+                    $q->where('end_date', '>=', $today)
+                        ->orWhereNull('end_date');
+                })->first();
+        }
+        
+        if (!$heroProgram) {
+            $heroProgram = Program::with('activities')->orderBy('start_date', 'desc')->first();
+        }
 
         $activeProgramsQuery = Program::with('activities')
             ->whereNotNull('start_date')
@@ -35,14 +60,6 @@ class HomeController extends Controller
         }
 
         $activePrograms = $activeProgramsQuery->get();
-
-        $upcomingSessions = ProgramActivity::with('program')
-            ->where('activity_date', '>=', $today)
-            ->where('status', '!=', 'cancelled')
-            ->orderBy('activity_date', 'asc')
-            ->orderBy('start_time', 'asc')
-            ->limit(3)
-            ->get();
 
         return Inertia::render('public/Home', [
             'heroProgram' => $heroProgram,

@@ -75,21 +75,6 @@ export default function Organization() {
             ],
         },
         {
-            title: 'Bidang Humas',
-            members: [
-                {
-                    role: 'Ketua',
-                    name: 'Nurlaila Zahra (Fath - A2)',
-                    image: anggotaHumasMamaFath,
-                },
-                {
-                    role: 'Anggota',
-                    name: 'Kunairoh (Thariq - A2)',
-                    image: anggotaHumasMamaThariq,
-                },
-            ],
-        },
-        {
             title: 'Bidang Konsumsi',
             members: [
                 {
@@ -106,6 +91,21 @@ export default function Organization() {
                     role: 'Anggota',
                     name: 'Nabila Rivmi (Rayya - A1)',
                     image: anggotaKonsumsiMamaRayya,
+                },
+            ],
+        },
+        {
+            title: 'Bidang Humas',
+            members: [
+                {
+                    role: 'Ketua',
+                    name: 'Nurlaila Zahra (Fath - A2)',
+                    image: anggotaHumasMamaFath,
+                },
+                {
+                    role: 'Anggota',
+                    name: 'Kunairoh (Thariq - A2)',
+                    image: anggotaHumasMamaThariq,
                 },
             ],
         },

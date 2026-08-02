@@ -266,7 +266,7 @@ export default function ProgramsIndex({ programs }: { programs: any }) {
                                         . Kosongkan jika program rutin memiliki
                                         sesi berulang{' '}
                                         <span className="text-slate-400 italic">
-                                            (Contoh: Jumat Berkah, Renang)
+                                            (Contoh: Jumat Berbagi, Renang)
                                         </span>
                                         .
                                     </p>

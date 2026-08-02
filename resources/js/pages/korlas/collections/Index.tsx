@@ -76,7 +76,7 @@ return alert('Pilih file bukti transfer terlebih dahulu');
                                     <tr>
                                         <th scope="col" className="px-6 py-3 text-left text-xs font-bold tracking-wider text-slate-500 uppercase">Siswa</th>
                                         <th scope="col" className="px-6 py-3 text-right text-xs font-bold tracking-wider text-slate-500 uppercase">Uang Kas (Tagihan)</th>
-                                        <th scope="col" className="px-6 py-3 text-right text-xs font-bold tracking-wider text-slate-500 uppercase">Jumat Berkah</th>
+                                        <th scope="col" className="px-6 py-3 text-right text-xs font-bold tracking-wider text-slate-500 uppercase">Jumat Berbagi</th>
                                         <th scope="col" className="px-6 py-3 text-center text-xs font-bold tracking-wider text-slate-500 uppercase">Status Bayar</th>
                                     </tr>
                                 </thead>
@@ -155,7 +155,7 @@ return alert('Pilih file bukti transfer terlebih dahulu');
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2 text-slate-600">
                                     <HandHeart className="h-5 w-5" />
-                                    <span>Total Jumat Berkah</span>
+                                    <span>Total Jumat Berbagi</span>
                                 </div>
                                 <span className="font-semibold text-slate-800">{formatCurrency(totals.jumat)}</span>
                             </div>
