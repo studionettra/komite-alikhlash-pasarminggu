@@ -4,9 +4,12 @@ import { motion } from 'framer-motion';
 // Static image imports from resources/images
 import anggotaHumasMamaFath from '../../../images/komite/anggota-humas-mama-fath.jpeg';
 import anggotaHumasMamaThariq from '../../../images/komite/anggota-humas-mama-thariq.jpeg';
+import anggotaKonsumsiMamaRayya from '../../../images/komite/anggota-konsumsi-mama-rayya.jpeg';
 import anggotaKonsumsiMamaRyu from '../../../images/komite/anggota-konsumsi-mama-ryu.jpeg';
+import anggotaSosmedMamaBaarik from '../../../images/komite/anggota-sosmed-mama-baarik.jpeg';
 import anggotaSosmedMamaShanum from '../../../images/komite/angota-sosmed-mama-shanum.jpeg';
 import bendaharaMamaSarah from '../../../images/komite/bendahara-mama-sarah.jpeg';
+import kepalaSekolah from '../../../images/komite/kepala-sekolah-Ibu-Rifdah, S.Pd..jpg';
 import ketuaKomiteMamaUna from '../../../images/komite/ketua-komite-mama-una.jpeg';
 import ketuaKonsumsiMamaRazka from '../../../images/komite/ketua-konsumsi-mama-razka.jpeg';
 import ketuaSosmedMamaAthar from '../../../images/komite/ketua-sosmed-mama-athar.jpeg';
@@ -17,26 +20,36 @@ import PublicLayout from '../../layouts/PublicLayout';
 export default function Organization() {
     const pengurus = [
         {
+            title: 'Kepala Sekolah',
+            members: [
+                {
+                    role: 'Kepala Sekolah',
+                    name: 'Rifda, S.Pd.',
+                    image: kepalaSekolah,
+                },
+            ],
+        },
+        {
             title: 'Pengurus Harian',
             members: [
                 {
                     role: 'Ketua',
-                    name: 'Mama Una BL2 (Eka)',
+                    name: 'Eka Putri Rahayu (Una - BL2)',
                     image: ketuaKomiteMamaUna,
                 },
                 {
                     role: 'Wakil Ketua',
-                    name: 'Mama Gani BL1 (Nova)',
+                    name: 'Noval Aysha Pratiwi (Ghani - BL1)',
                     image: wakilKetuaMamaGhani,
                 },
                 {
                     role: 'Sekretaris',
-                    name: 'Mama Daania KBIT (Denissa)',
+                    name: 'Denissa Indriana (Daania - KBIT)',
                     image: sekretarisMamaDaania,
                 },
                 {
                     role: 'Bendahara',
-                    name: 'Mama Sarah B (Rima)',
+                    name: 'Karima Salsabila (Sarah - B)',
                     image: bendaharaMamaSarah,
                 },
             ],
@@ -46,18 +59,18 @@ export default function Organization() {
             members: [
                 {
                     role: 'Ketua',
-                    name: 'Mama Athar B (Vita)',
+                    name: 'Novita Diah Lestari (Athar - KBIT)',
                     image: ketuaSosmedMamaAthar,
                 },
                 {
                     role: 'Anggota',
-                    name: 'Mama Shanum BL1 (Widya)',
+                    name: 'Widiya Juliana (Shanum - BL1)',
                     image: anggotaSosmedMamaShanum,
                 },
                 {
                     role: 'Anggota',
-                    name: 'Mama Baarik B (Rosmanih)',
-                    image: null,
+                    name: 'Rosmanih (Baarik - B)',
+                    image: anggotaSosmedMamaBaarik,
                 },
             ],
         },
@@ -66,12 +79,12 @@ export default function Organization() {
             members: [
                 {
                     role: 'Ketua',
-                    name: 'Mama Fath A2 (Sarah)',
+                    name: 'Nurlaila Zahra (Fath - A2)',
                     image: anggotaHumasMamaFath,
                 },
                 {
                     role: 'Anggota',
-                    name: 'Mama Thariq A2 (Kunairoh)',
+                    name: 'Kunairoh (Thariq - A2)',
                     image: anggotaHumasMamaThariq,
                 },
             ],
@@ -81,13 +94,18 @@ export default function Organization() {
             members: [
                 {
                     role: 'Ketua',
-                    name: 'Mama Razka BL2 (Rahma)',
+                    name: 'Rahmawati (Razka - BL2)',
                     image: ketuaKonsumsiMamaRazka,
                 },
                 {
                     role: 'Anggota',
-                    name: 'Mama Rayya A1 (Bella)',
+                    name: 'Tuti Alawiyah (Ryu - A1)',
                     image: anggotaKonsumsiMamaRyu,
+                },
+                {
+                    role: 'Anggota',
+                    name: 'Nabila Rivmi (Rayya - A1)',
+                    image: anggotaKonsumsiMamaRayya,
                 },
             ],
         },
@@ -179,7 +197,11 @@ export default function Organization() {
                                                 <img
                                                     src={member.image}
                                                     alt={member.name}
-                                                    className="h-full w-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
+                                                    className={`h-full w-full object-cover transition-transform duration-500 ease-out ${
+                                                        member.role === 'Kepala Sekolah'
+                                                            ? 'object-[center_15%] scale-[1.6] group-hover:scale-[1.7]'
+                                                            : 'object-center group-hover:scale-[1.15]'
+                                                    }`}
                                                     loading="lazy"
                                                 />
                                             ) : (

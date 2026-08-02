@@ -38,5 +38,5 @@
 
 **Anggota**
 
--   Mama Rayya A1 (Bella)
+-   Mama Rayya A1 (Nabila)
 -   Mama Ryu A1 (Tuti A.)
