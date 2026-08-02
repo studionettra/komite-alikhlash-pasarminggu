@@ -12,11 +12,12 @@ import {
     Paperclip,
     FilePdf,
     Image as ImageIcon,
+    WhatsappLogo,
 } from '@phosphor-icons/react';
 import type { FormEventHandler } from 'react';
 import { useState } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
-import { confirmDelete } from '../../utils/confirmToast';
+import { confirmDelete } from '../../utils/alertManager';
 
 const COMMITTEE_MEMBERS = [
     'Mama Una BL2 (Eka)',
@@ -123,6 +124,59 @@ export default function MeetingsIndex({ meetings }: { meetings: any }) {
         confirmDelete(`Hapus notulensi untuk agenda: ${agenda}?`, () => {
             router.delete(`/meetings/${id}`);
         });
+    };
+
+    const shareToWhatsApp = (meeting: any) => {
+        const formattedDate = meeting.date
+            ? new Date(meeting.date).toLocaleDateString('id-ID', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
+              })
+            : '-';
+
+        let text = `*NOTULENSI RAPAT KOMITE*\n`;
+        text += `*Tanggal:* ${formattedDate}\n`;
+        text += `*Agenda:* ${meeting.agenda}\n\n`;
+
+        if (meeting.attendees) {
+            text += `*Daftar Hadir:*\n`;
+            const attendeesArray = meeting.attendees.split(',').map((a: string) => a.trim());
+            attendeesArray.forEach((a: string) => {
+                text += `- ${a}\n`;
+            });
+            text += `\n`;
+        }
+
+        if (meeting.decisions) {
+            text += `*Hasil Keputusan:*\n${meeting.decisions}\n\n`;
+        }
+
+        if (meeting.follow_up) {
+            text += `*Tindak Lanjut:*\n${meeting.follow_up}\n\n`;
+        }
+
+        if (meeting.documents && meeting.documents.length > 0) {
+            text += `*Lampiran Dokumen:*\n`;
+            meeting.documents.forEach((doc: any) => {
+                // Ensure absolute URL
+                const fileUrl = new URL(`/storage/${doc.file_path}`, window.location.origin).href;
+                text += `${fileUrl}\n`;
+            });
+        }
+
+        const encodedText = encodeURIComponent(text);
+        
+        // Cek limitasi kasar, jika lebih dari 2000 char mungkin bermasalah di beberapa browser
+        if (encodedText.length > 4000) {
+            // Fallback copy to clipboard
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Teks terlalu panjang untuk link WhatsApp, namun teks telah berhasil di-copy. Silakan paste secara manual di WhatsApp.");
+            });
+            return;
+        }
+
+        window.open(`https://wa.me/?text=${encodedText}`, '_blank');
     };
 
     return (
@@ -443,7 +497,7 @@ export default function MeetingsIndex({ meetings }: { meetings: any }) {
                         canManageMeeting ? 'lg:col-span-2' : 'lg:col-span-3'
                     }
                 >
-                    {isAnggota ? (
+                    {!canManageMeeting ? (
                         <div className="space-y-6">
                             {meetings.data.length === 0 ? (
                                 <div className="flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-sm">
@@ -804,7 +858,15 @@ export default function MeetingsIndex({ meetings }: { meetings: any }) {
                                                 </td>
                                                 {canManageMeeting && (
                                                     <td className="mt-4 block border-t border-slate-100 px-0 pt-4 text-right align-top whitespace-nowrap md:mt-0 md:table-cell md:border-0 md:px-6 md:py-4">
-                                                        <div className="grid grid-cols-2 gap-3 md:flex md:justify-end md:gap-2">
+                                                        <div className="grid grid-cols-3 gap-3 md:flex md:justify-end md:gap-2">
+                                                            <button
+                                                                onClick={() => shareToWhatsApp(meeting)}
+                                                                className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-100 px-4 py-2.5 text-sm font-semibold text-slate-600 transition-all hover:bg-emerald-50 hover:text-emerald-600 md:w-auto md:bg-transparent md:p-2 md:text-slate-400"
+                                                                title="Share via WhatsApp"
+                                                            >
+                                                                <WhatsappLogo weight="bold" className="h-4 w-4" />
+                                                                <span className="md:hidden">Share</span>
+                                                            </button>
                                                             <button
                                                                 onClick={() =>
                                                                     openEdit(

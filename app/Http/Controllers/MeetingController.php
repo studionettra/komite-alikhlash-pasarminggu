@@ -83,9 +83,9 @@ class MeetingController extends Controller
             }
             $doc->delete();
         }
-        
+
         $meeting->delete();
-        Alert::success('Berhasil', 'Notulensi rapat dihapus.');
+        Alert::deleteSuccess('Berhasil', 'Notulensi rapat dihapus.');
 
         return back();
     }
