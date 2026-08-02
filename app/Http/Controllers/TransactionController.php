@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Helpers\Alert;
 use App\Models\Program;
 use App\Models\Transaction;
+use App\Services\GoogleSheetsService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -19,7 +21,7 @@ class TransactionController extends Controller
         }
 
         $transactions = $query->paginate(15)->withQueryString();
-        
+
         $totalIncome = (clone $query)->where('type', 'income')->sum('amount');
         $totalExpense = (clone $query)->where('type', 'expense')->sum('amount');
 
@@ -32,8 +34,8 @@ class TransactionController extends Controller
             'summary' => [
                 'income' => $totalIncome,
                 'expense' => $totalExpense,
-                'balance' => $totalIncome - $totalExpense
-            ]
+                'balance' => $totalIncome - $totalExpense,
+            ],
         ]);
     }
 
@@ -65,7 +67,46 @@ class TransactionController extends Controller
     public function destroy(Transaction $transaction)
     {
         $transaction->delete();
-        Alert::success('Berhasil', 'Transaksi dihapus.');
+        Alert::deleteSuccess('Berhasil', 'Transaksi dihapus.');
+
+        return back();
+    }
+
+    public function exportToSheets(GoogleSheetsService $sheetsService)
+    {
+        try {
+            $transactions = Transaction::with('program')->orderBy('date', 'asc')->get();
+
+            // Header row
+            $values = [
+                ['Tanggal', 'Tipe', 'Keterangan', 'Program', 'Nominal', 'Link Lampiran'],
+            ];
+
+            foreach ($transactions as $trx) {
+                $attachmentLink = $trx->receipt_path ? asset('storage/'.$trx->receipt_path) : 'Tidak ada';
+                $programName = $trx->program ? $trx->program->title : 'Umum';
+
+                $values[] = [
+                    Carbon::parse($trx->date)->format('d-M-Y'),
+                    $trx->type === 'income' ? 'Pemasukan' : 'Pengeluaran',
+                    $trx->description,
+                    $programName,
+                    $trx->amount,
+                    $attachmentLink,
+                ];
+            }
+
+            $sheetsService->clearRange('Sheet1!A:F'); // Clear previous data
+            $success = $sheetsService->appendData('Sheet1!A1', $values);
+
+            if ($success) {
+                Alert::success('Berhasil', 'Data berhasil diekspor ke Google Sheets.');
+            } else {
+                Alert::error('Gagal', 'Tidak ada data yang diupdate di Google Sheets.');
+            }
+        } catch (\Exception $e) {
+            Alert::error('Error Export', $e->getMessage());
+        }
 
         return back();
     }
