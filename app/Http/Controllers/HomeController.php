@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Program;
+use App\Models\ProgramActivity;
 use App\Models\Transaction;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class HomeController extends Controller
@@ -13,30 +15,39 @@ class HomeController extends Controller
         $today = now()->setTimezone('Asia/Jakarta')->format('Y-m-d');
 
         $heroProgram = Program::with('activities')->where('start_date', '<=', $today)
-                ->where(function($q) use ($today) {
-                    $q->where('end_date', '>=', $today)
-                      ->orWhereNull('end_date');
-                })->first() 
+            ->where(function ($q) use ($today) {
+                $q->where('end_date', '>=', $today)
+                    ->orWhereNull('end_date');
+            })->first()
             ?? Program::with('activities')->where('start_date', '>', $today)->orderBy('start_date', 'asc')->first()
             ?? Program::with('activities')->whereNotNull('start_date')->orderBy('start_date', 'asc')->first();
 
         $activeProgramsQuery = Program::with('activities')
             ->whereNotNull('start_date')
-            ->where(function($q) use ($today) {
+            ->where(function ($q) use ($today) {
                 $q->where('end_date', '>=', $today)
-                  ->orWhereNull('end_date');
+                    ->orWhereNull('end_date');
             })
             ->orderBy('start_date', 'asc');
-            
+
         if ($heroProgram) {
             $activeProgramsQuery->where('id', '!=', $heroProgram->id);
         }
-            
+
         $activePrograms = $activeProgramsQuery->get();
+
+        $upcomingSessions = ProgramActivity::with('program')
+            ->where('activity_date', '>=', $today)
+            ->where('status', '!=', 'cancelled')
+            ->orderBy('activity_date', 'asc')
+            ->orderBy('start_time', 'asc')
+            ->limit(3)
+            ->get();
 
         return Inertia::render('public/Home', [
             'heroProgram' => $heroProgram,
             'activePrograms' => $activePrograms,
+            'upcomingSessions' => $upcomingSessions,
         ]);
     }
 
@@ -45,7 +56,7 @@ class HomeController extends Controller
         return Inertia::render('public/Organization');
     }
 
-    public function finance(\Illuminate\Http\Request $request)
+    public function finance(Request $request)
     {
         $query = Transaction::with('program')->orderBy('date', 'desc');
 
@@ -54,7 +65,7 @@ class HomeController extends Controller
         }
 
         $transactions = $query->paginate(20)->withQueryString();
-        
+
         $totalIncome = (clone $query)->where('type', 'income')->sum('amount');
         $totalExpense = (clone $query)->where('type', 'expense')->sum('amount');
         $balance = $totalIncome - $totalExpense;
@@ -76,9 +87,9 @@ class HomeController extends Controller
     public function programs()
     {
         $programs = Program::with([
-            'activities' => fn($q) => $q->orderBy('activity_date', 'desc'),
+            'activities' => fn ($q) => $q->orderBy('activity_date', 'desc'),
             'activities.documents',
-            'documents' => fn($q) => $q->whereNull('program_activity_id')
+            'documents' => fn ($q) => $q->whereNull('program_activity_id'),
         ])->orderBy('created_at', 'desc')->get();
 
         return Inertia::render('public/Programs', [

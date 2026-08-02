@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProgramActivity extends Model
 {
@@ -22,13 +25,13 @@ class ProgramActivity extends Model
             return 'cancelled';
         }
 
-        if (!$this->activity_date) {
+        if (! $this->activity_date) {
             return $value;
         }
 
         $now = now()->setTimezone('Asia/Jakarta');
-        $start = \Carbon\Carbon::parse($this->activity_date->format('Y-m-d') . ' ' . ($this->start_time ?? '00:00:00'))->setTimezone('Asia/Jakarta');
-        $end = \Carbon\Carbon::parse($this->activity_date->format('Y-m-d') . ' ' . ($this->end_time ?? '23:59:59'))->setTimezone('Asia/Jakarta');
+        $start = Carbon::parse($this->activity_date->format('Y-m-d').' '.($this->start_time ?? '00:00:00'))->setTimezone('Asia/Jakarta');
+        $end = Carbon::parse($this->activity_date->format('Y-m-d').' '.($this->end_time ?? '23:59:59'))->setTimezone('Asia/Jakarta');
 
         if ($now->isBefore($start)) {
             return 'planned';
@@ -46,17 +49,17 @@ class ProgramActivity extends Model
         ];
     }
 
-    public function program(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function program(): BelongsTo
     {
         return $this->belongsTo(Program::class);
     }
 
-    public function documents(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function documents(): HasMany
     {
         return $this->hasMany(Document::class);
     }
 
-    public function transactions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
     }

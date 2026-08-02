@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import ProgramCalendar from '../../components/public/ProgramCalendar';
 import PublicLayout from '../../layouts/PublicLayout';
 
-export default function Home({ heroProgram, activePrograms }: any) {
+export default function Home({ heroProgram, activePrograms, upcomingSessions }: any) {
     useEffect(() => {
         const script = document.createElement('script');
         script.src = 'https://elfsightcdn.com/platform.js';
@@ -82,11 +82,11 @@ export default function Home({ heroProgram, activePrograms }: any) {
 
             {/* Hero Section */}
             <section className="relative overflow-hidden border-b border-slate-200 bg-slate-50 pt-24 pb-20 lg:pt-32 lg:pb-28">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                     {heroProgram ? (
                         <div className="flex flex-col items-center gap-12 lg:flex-row lg:gap-16">
                             {/* Text Content */}
-                            <div className="w-full lg:w-1/2 lg:pr-8">
+                            <div className="w-full lg:w-[70%] lg:pr-8">
                                 <div
                                     className={`mb-6 inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold tracking-wider uppercase ${heroProgram.status === 'ongoing' ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'}`}
                                 >
@@ -104,7 +104,7 @@ export default function Home({ heroProgram, activePrograms }: any) {
                                 <div className="flex flex-wrap items-center gap-4">
                                     <Link
                                         href={`/program?id=${heroProgram.id}`}
-                                        className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-6 py-3.5 font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-[1px] hover:bg-blue-700"
+                                        className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-6 py-3.5 font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-px hover:bg-blue-700"
                                     >
                                         Detail Program
                                     </Link>
@@ -135,29 +135,37 @@ export default function Home({ heroProgram, activePrograms }: any) {
                                 </div>
                             </div>
 
-                            {/* Image Content (Placeholder) */}
-                            <div className="w-full lg:w-1/2">
-                                <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-3xl border border-blue-200 bg-gradient-to-br from-blue-100 to-indigo-50 shadow-sm lg:aspect-[4/3]">
-                                    <div className="p-8 text-center">
-                                        <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-blue-200 text-blue-600">
-                                            <svg
-                                                className="h-10 w-10"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={1.5}
-                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                                />
-                                            </svg>
+                            {/* Upcoming Sessions Content */}
+                            <div className="w-full lg:w-[30%]">
+                                <h3 className="mb-4 text-lg font-bold text-slate-800">Kegiatan Terdekat</h3>
+                                <div className="flex flex-col gap-3">
+                                    {upcomingSessions && upcomingSessions.length > 0 ? (
+                                        upcomingSessions.map((session: any) => (
+                                            <div key={session.id} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:shadow-md">
+                                                <div className="mb-2 flex items-center justify-between">
+                                                    <span className="inline-flex items-center rounded-lg bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700">
+                                                        {new Date(session.activity_date).toLocaleDateString('id-ID', {
+                                                            day: 'numeric',
+                                                            month: 'short'
+                                                        })}
+                                                    </span>
+                                                    {(session.start_time || session.end_time) && (
+                                                        <span className="text-xs font-medium text-slate-500">
+                                                            {session.start_time?.substring(0, 5) || ''} {session.end_time ? `- ${session.end_time.substring(0, 5)}` : ''}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <h4 className="font-bold text-slate-900 leading-tight mb-1">{session.title}</h4>
+                                                {session.program && (
+                                                    <p className="text-xs font-medium text-slate-500 line-clamp-1">{session.program.title}</p>
+                                                )}
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <div className="rounded-2xl border border-dashed border-slate-200 bg-white/50 p-6 text-center">
+                                            <p className="text-sm font-medium text-slate-500">Belum ada jadwal kegiatan terdekat.</p>
                                         </div>
-                                        <p className="font-medium text-blue-800">
-                                            Gambar Program Segera Hadir
-                                        </p>
-                                    </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -191,7 +199,7 @@ export default function Home({ heroProgram, activePrograms }: any) {
 
             {/* Financial CTA Banner */}
             <section className="border-t border-slate-200 bg-slate-50 py-16">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                     <div className="relative overflow-hidden rounded-3xl bg-slate-900 shadow-lg">
                         {/* Background pattern */}
                         <div className="absolute inset-0 opacity-10">
@@ -223,7 +231,7 @@ export default function Home({ heroProgram, activePrograms }: any) {
                                 </p>
                             </div>
 
-                            <div className="w-full flex-shrink-0 md:w-auto">
+                            <div className="w-full shrink-0 md:w-auto">
                                 <Link
                                     href="/keuangan"
                                     className="inline-flex w-full items-center justify-center gap-3 rounded-xl bg-white px-8 py-4 font-bold text-slate-900 shadow-sm transition-all duration-200 hover:scale-105 hover:bg-slate-100 md:w-auto"
@@ -251,10 +259,10 @@ export default function Home({ heroProgram, activePrograms }: any) {
 
             {/* Instagram Feed Section */}
             <section className="bg-white py-20">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                     <div className="mb-12 flex flex-col items-center justify-between gap-6 sm:flex-row">
                         <div className="flex items-center gap-4">
-                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 text-white">
+                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-linear-to-tr from-yellow-400 via-red-500 to-purple-500 text-white">
                                 <svg
                                     className="h-6 w-6"
                                     fill="currentColor"
@@ -278,13 +286,13 @@ export default function Home({ heroProgram, activePrograms }: any) {
                             href="https://www.instagram.com/tkit.alikhlash/?hl=en"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 px-6 py-3 font-bold whitespace-nowrap text-white shadow-md transition-all duration-200 hover:-translate-y-[1px] hover:shadow-lg"
+                            className="inline-flex items-center gap-2 rounded-full bg-linear-to-r from-purple-600 to-pink-500 px-6 py-3 font-bold whitespace-nowrap text-white shadow-md transition-all duration-200 hover:-translate-y-px hover:shadow-lg"
                         >
                             Follow Now
                         </a>
                     </div>
 
-                    <div className="mt-8 min-h-[300px] w-full">
+                    <div className="mt-8 min-h-75 w-full">
                         <div
                             className="elfsight-app-81fba1fa-87f5-4b47-bdbd-1eff0f9bdbf6"
                             data-elfsight-app-lazy="true"
