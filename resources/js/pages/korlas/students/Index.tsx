@@ -8,9 +8,11 @@ import { confirmDelete } from '../../../utils/alertManager';
 export default function StudentsIndex({
     classroom,
     students,
+    allClassrooms = [],
 }: {
     classroom: any;
     students: any[];
+    allClassrooms?: any[];
 }) {
     const [isEditing, setIsEditing] = useState(false);
     const [editingId, setEditingId] = useState<number | null>(null);
@@ -20,6 +22,7 @@ export default function StudentsIndex({
             name: '',
             parent_name: '',
             is_active: true,
+            classroom_id: classroom?.id || '',
         });
 
     const openCreate = () => {
@@ -66,12 +69,13 @@ export default function StudentsIndex({
             name: student.name,
             parent_name: student.parent_name,
             is_active: !student.is_active,
+            classroom_id: classroom.id,
         });
     };
 
     const deleteStudent = (id: number, name: string) => {
         confirmDelete(`Hapus siswa ${name}? Data pembayaran yang terkait juga mungkin akan terhapus.`, () => {
-            router.delete(`/korlas/students/${id}`);
+            router.delete(`/korlas/students/${id}`, { data: { classroom_id: classroom.id } });
         });
     };
 
@@ -86,6 +90,23 @@ export default function StudentsIndex({
                     </h1>
                     <p className="mt-1 text-sm text-slate-500">Kelas: {classroom.name}</p>
                 </div>
+                {allClassrooms && allClassrooms.length > 0 && (
+                    <div>
+                        <select
+                            value={classroom.id}
+                            onChange={(e) => {
+                                router.get('/korlas/students', { classroom_id: e.target.value }, { preserveState: false });
+                            }}
+                            className="rounded-lg border-slate-300 py-2 pl-3 pr-10 text-sm font-medium focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                        >
+                            {allClassrooms.map((c: any) => (
+                                <option key={c.id} value={c.id}>
+                                    Pilih Kelas: {c.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                )}
             </div>
 
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">

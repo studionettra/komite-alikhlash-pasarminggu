@@ -1,5 +1,5 @@
 import { Head, useForm, router } from '@inertiajs/react';
-import { UploadSimple, CheckCircle, ClockCounterClockwise, CurrencyCircleDollar, HandHeart } from '@phosphor-icons/react';
+import { UploadSimple, CheckCircle, ClockCounterClockwise, Money, HandHeart } from '@phosphor-icons/react';
 import type { FormEventHandler } from 'react';
 import { useState } from 'react';
 import DashboardLayout from '../../../layouts/DashboardLayout';
@@ -9,13 +9,15 @@ export default function CollectionsIndex({
     collection,
     details,
     totals,
-    history
+    history,
+    allClassrooms = []
 }: {
     classroom: any;
     collection: any;
     details: any[];
     totals: any;
     history: any[];
+    allClassrooms?: any[];
 }) {
     const { data, setData, post, processing, errors } = useForm({
         transfer_proof: null as File | null,
@@ -25,8 +27,20 @@ export default function CollectionsIndex({
         return new Intl.NumberFormat('id-ID', {
             style: 'currency',
             currency: 'IDR',
-            minimumFractionDigits: 0
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
         }).format(amount);
+    };
+
+    const formatInputCurrency = (value: string | number) => {
+        const intValue = Math.floor(Number(value)) || 0;
+        return intValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
+
+    const handleUpdateDetailFormatted = (detail: any, field: string, displayValue: string) => {
+        const numericValue = displayValue.replace(/[^0-9]/g, '');
+        const value = numericValue ? parseInt(numericValue, 10) : 0;
+        handleUpdateDetail(detail, field, value);
     };
 
     const handleUpdateDetail = (detail: any, field: string, value: any) => {
@@ -35,7 +49,8 @@ export default function CollectionsIndex({
             kas_amount: field === 'kas_amount' ? value : detail.kas_amount,
             jumat_berkah_amount: field === 'jumat_berkah_amount' ? value : detail.jumat_berkah_amount,
         }, {
-            preserveScroll: true
+            preserveScroll: true,
+            preserveState: true
         });
     };
 
@@ -57,11 +72,30 @@ return alert('Pilih file bukti transfer terlebih dahulu');
         <DashboardLayout>
             <Head title={`Setoran Kelas - ${classroom.name}`} />
 
-            <div className="mb-6">
-                <h1 className="text-2xl font-bold text-slate-800">
-                    Setoran Uang Kas & Donasi
-                </h1>
-                <p className="mt-1 text-sm text-slate-500">Kelas: {classroom.name} | Periode: {monthNames[collection.month]} {collection.year}</p>
+            <div className="mb-6 flex items-center justify-between">
+                <div>
+                    <h1 className="text-2xl font-bold text-slate-800">
+                        Setoran Uang Kas & Donasi
+                    </h1>
+                    <p className="mt-1 text-sm text-slate-500">Kelas: {classroom.name} | Periode: {monthNames[collection.month]} {collection.year}</p>
+                </div>
+                {allClassrooms && allClassrooms.length > 0 && (
+                    <div>
+                        <select
+                            value={classroom.id}
+                            onChange={(e) => {
+                                router.get('/korlas/collections', { classroom_id: e.target.value }, { preserveState: false });
+                            }}
+                            className="rounded-lg border-slate-300 py-2 pl-3 pr-10 text-sm font-medium focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                        >
+                            {allClassrooms.map((c: any) => (
+                                <option key={c.id} value={c.id}>
+                                    Pilih Kelas: {c.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                )}
             </div>
 
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -94,9 +128,9 @@ return alert('Pilih file bukti transfer terlebih dahulu');
                                             <td className="px-6 py-4 text-right text-sm text-slate-700">
                                                 {collection.status === 'draft' ? (
                                                     <input 
-                                                        type="number"
-                                                        value={detail.kas_amount}
-                                                        onChange={(e) => handleUpdateDetail(detail, 'kas_amount', e.target.value)}
+                                                        type="text"
+                                                        value={formatInputCurrency(detail.kas_amount)}
+                                                        onChange={(e) => handleUpdateDetailFormatted(detail, 'kas_amount', e.target.value)}
                                                         className="w-32 rounded-lg border border-slate-300 px-2 py-1 text-right focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                                                     />
                                                 ) : (
@@ -106,9 +140,9 @@ return alert('Pilih file bukti transfer terlebih dahulu');
                                             <td className="px-6 py-4 text-right text-sm text-slate-700">
                                                 {collection.status === 'draft' ? (
                                                     <input 
-                                                        type="number"
-                                                        value={detail.jumat_berkah_amount}
-                                                        onChange={(e) => handleUpdateDetail(detail, 'jumat_berkah_amount', e.target.value)}
+                                                        type="text"
+                                                        value={formatInputCurrency(detail.jumat_berkah_amount)}
+                                                        onChange={(e) => handleUpdateDetailFormatted(detail, 'jumat_berkah_amount', e.target.value)}
                                                         className="w-32 rounded-lg border border-slate-300 px-2 py-1 text-right focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                                                     />
                                                 ) : (
@@ -147,7 +181,7 @@ return alert('Pilih file bukti transfer terlebih dahulu');
                         <div className="space-y-4">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2 text-slate-600">
-                                    <CurrencyCircleDollar className="h-5 w-5" />
+                                    <Money className="h-5 w-5" />
                                     <span>Total Uang Kas</span>
                                 </div>
                                 <span className="font-semibold text-slate-800">{formatCurrency(totals.kas)}</span>

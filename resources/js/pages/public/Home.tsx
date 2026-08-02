@@ -1,17 +1,17 @@
 import { Head, Link } from '@inertiajs/react';
 import { useEffect } from 'react';
-import { 
-    Heart, 
-    Trophy, 
-    BowlFood, 
-    PersonSimpleSwim, 
-    Storefront, 
-    ChalkboardTeacher, 
-    UsersThree, 
-    Handshake, 
-    Tree, 
-    GraduationCap, 
-    CalendarBlank 
+import {
+    Heart,
+    Trophy,
+    BowlFood,
+    PersonSimpleSwim,
+    Storefront,
+    ChalkboardTeacher,
+    UsersThree,
+    Handshake,
+    Tree,
+    GraduationCap,
+    CalendarBlank
 } from '@phosphor-icons/react';
 import ProgramCalendar from '../../components/public/ProgramCalendar';
 import PublicLayout from '../../layouts/PublicLayout';
@@ -91,10 +91,10 @@ export default function Home({ heroProgram, activePrograms, upcomingSessions }: 
 
     const getProgramIcon = (title: string) => {
         if (!title) return <CalendarBlank weight="fill" className="h-28 w-28 text-slate-100 transition-colors duration-500 group-hover:text-blue-100 absolute -bottom-6 -right-6 z-0" />;
-        
+
         const t = title.toLowerCase();
         const iconClass = "h-28 w-28 text-slate-100 transition-colors duration-500 group-hover:text-blue-100 absolute -bottom-6 -right-6 z-0 rotate-[-10deg]";
-        
+
         if (t.includes('berbagi')) return <Heart weight="fill" className={iconClass} />;
         if (t.includes('lomba') || t.includes('hut')) return <Trophy weight="fill" className={iconClass} />;
         if (t.includes('makan')) return <BowlFood weight="fill" className={iconClass} />;
@@ -105,7 +105,7 @@ export default function Home({ heroProgram, activePrograms, upcomingSessions }: 
         if (t.includes('halal')) return <Handshake weight="fill" className={iconClass} />;
         if (t.includes('piknik')) return <Tree weight="fill" className={iconClass} />;
         if (t.includes('pelepasan') || t.includes('seni')) return <GraduationCap weight="fill" className={iconClass} />;
-        
+
         return <CalendarBlank weight="fill" className={iconClass} />;
     };
 
@@ -125,7 +125,7 @@ export default function Home({ heroProgram, activePrograms, upcomingSessions }: 
                                 >
                                     {heroProgram.status === 'ongoing'
                                         ? 'Sedang Berlangsung'
-                                        : 'Agenda Terdekat'}
+                                        : 'Program Terdekat'}
                                 </div>
                                 <h1 className="mb-6 text-4xl leading-[1.15] font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
                                     {heroProgram.title}
@@ -172,7 +172,7 @@ export default function Home({ heroProgram, activePrograms, upcomingSessions }: 
                                     })()}
                                 </div>
                             </div>
-                            
+
                             {/* Image Content */}
                             <div className="w-full lg:w-1/2">
                                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl bg-slate-200 shadow-2xl">
@@ -211,7 +211,7 @@ export default function Home({ heroProgram, activePrograms, upcomingSessions }: 
                             </p>
                         </div>
                     )}
-                    
+
                     {/* Upcoming Sessions Content (Inside Hero Section) */}
                     {upcomingSessions && upcomingSessions.length > 0 && (
                         <div className="mt-20 pt-12 border-t border-slate-200/80">

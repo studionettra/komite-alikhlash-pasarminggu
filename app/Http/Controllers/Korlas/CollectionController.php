@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Korlas;
 
 use App\Http\Controllers\Controller;
+use App\Models\Classroom;
 use App\Models\ClassCollection;
 use App\Models\CollectionDetail;
 use App\Models\Student;
@@ -14,10 +15,24 @@ class CollectionController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $classroom = $user->classrooms()->first();
+        $isSuperadmin = $user->hasRole('Superadmin');
+        $allClassrooms = [];
+
+        if ($isSuperadmin) {
+            $allClassrooms = Classroom::orderBy('name', 'asc')->get();
+            $classroomId = $request->input('classroom_id');
+            
+            if ($classroomId) {
+                $classroom = Classroom::find($classroomId);
+            } else {
+                $classroom = $allClassrooms->first();
+            }
+        } else {
+            $classroom = $user->classrooms()->first();
+        }
 
         if (! $classroom) {
-            return redirect()->back()->with('error', 'Anda belum memiliki kelas yang ditugaskan.');
+            return redirect()->back()->with('error', $isSuperadmin ? 'Belum ada kelas satupun di dalam sistem.' : 'Anda belum memiliki kelas yang ditugaskan.');
         }
 
         $month = (int) now()->format('m');
@@ -59,6 +74,37 @@ class CollectionController extends Controller
             }
 
             $collection->load('details.student');
+        } elseif ($collection->status === 'draft') {
+            $activeStudents = Student::where('classroom_id', $classroom->id)
+                ->where('is_active', true)
+                ->get();
+                
+            $existingStudentIds = $collection->details->pluck('student_id')->toArray();
+            $newDetailsAdded = false;
+
+            foreach ($activeStudents as $student) {
+                if (!in_array($student->id, $existingStudentIds)) {
+                    $unpaidMonthsCount = CollectionDetail::where('student_id', $student->id)
+                        ->where('is_paid', false)
+                        ->count();
+
+                    $arrears = $unpaidMonthsCount * 75000;
+                    $defaultAmount = 75000 + $arrears;
+
+                    CollectionDetail::create([
+                        'class_collection_id' => $collection->id,
+                        'student_id' => $student->id,
+                        'kas_amount' => $defaultAmount,
+                        'jumat_berkah_amount' => 0,
+                        'is_paid' => false,
+                    ]);
+                    $newDetailsAdded = true;
+                }
+            }
+            
+            if ($newDetailsAdded) {
+                $collection->load('details.student');
+            }
         }
 
         // Calculate totals dynamically from UI edits or DB
@@ -77,6 +123,7 @@ class CollectionController extends Controller
                 ->orderBy('year', 'desc')
                 ->orderBy('month', 'desc')
                 ->get(),
+            'allClassrooms' => $allClassrooms,
         ]);
     }
 
@@ -89,10 +136,16 @@ class CollectionController extends Controller
         ]);
 
         $collection = $detail->collection;
-        $classroom = $request->user()->classrooms()->firstOrFail();
 
-        if ($collection->classroom_id !== $classroom->id || $collection->status !== 'draft') {
-            abort(403, 'Unauthorized action or collection is not in draft status.');
+        if (! $request->user()->hasRole('Superadmin')) {
+            $classroom = $request->user()->classrooms()->firstOrFail();
+            if ($collection->classroom_id !== $classroom->id) {
+                abort(403, 'Unauthorized action.');
+            }
+        }
+
+        if ($collection->status !== 'draft') {
+            abort(403, 'Collection is not in draft status.');
         }
 
         $detail->update([
@@ -118,10 +171,15 @@ class CollectionController extends Controller
             'transfer_proof' => 'required|image|max:2048',
         ]);
 
-        $classroom = $request->user()->classrooms()->firstOrFail();
+        if (! $request->user()->hasRole('Superadmin')) {
+            $classroom = $request->user()->classrooms()->firstOrFail();
+            if ($collection->classroom_id !== $classroom->id) {
+                abort(403, 'Unauthorized action.');
+            }
+        }
 
-        if ($collection->classroom_id !== $classroom->id || $collection->status !== 'draft') {
-            abort(403, 'Unauthorized action.');
+        if ($collection->status !== 'draft') {
+            abort(403, 'Collection is not in draft status.');
         }
 
         $totalKas = $collection->details()->where('is_paid', true)->sum('kas_amount');

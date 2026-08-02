@@ -225,14 +225,26 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                             </div>
                         </div>
                     </div>
-                    <Link
-                        href="/logout"
-                        method="post"
-                        as="button"
-                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-4 py-2 text-sm font-medium text-slate-300 transition-all duration-200 hover:border-rose-500/20 hover:bg-rose-500/10 hover:text-rose-400 active:scale-[0.98]"
-                    >
-                        <SignOut weight="bold" />
-                    </Link>
+                    <div className="flex items-center gap-2">
+                        <Link
+                            href="/profile"
+                            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-slate-800 px-3 py-2 text-sm font-medium text-slate-300 transition-all duration-200 hover:bg-slate-700 hover:text-white active:scale-[0.98]"
+                            title="Profil Saya"
+                        >
+                            <UserGear weight="fill" className="h-4 w-4" />
+                            <span className="truncate">Profil</span>
+                        </Link>
+                        <Link
+                            href="/logout"
+                            method="post"
+                            as="button"
+                            className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-sm font-medium text-slate-300 transition-all duration-200 hover:border-rose-500/20 hover:bg-rose-500/10 hover:text-rose-400 active:scale-[0.98]"
+                            title="Keluar"
+                        >
+                            <SignOut weight="bold" className="h-4 w-4" />
+                            <span className="truncate">Logout</span>
+                        </Link>
+                    </div>
                 </div>
             </aside>
 

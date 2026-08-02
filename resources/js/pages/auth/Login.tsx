@@ -1,5 +1,6 @@
 import { useForm, Head } from '@inertiajs/react';
 import type { FormEventHandler } from 'react';
+import { Turnstile } from '@marsidev/react-turnstile';
 import appLogo from '../../../images/logo/logo-komite-alikhlash-jatipadang.png';
 import PublicLayout from '../../layouts/PublicLayout';
 
@@ -8,6 +9,7 @@ export default function Login() {
         email: '',
         password: '',
         remember: false,
+        'cf-turnstile-response': '',
     });
 
     const submit: FormEventHandler = (e) => {
@@ -23,6 +25,11 @@ export default function Login() {
 
         if (!data.password) {
             setError('password', 'Password wajib diisi untuk login.');
+            hasError = true;
+        }
+
+        if (!data['cf-turnstile-response']) {
+            setError('cf-turnstile-response', 'Silakan verifikasi keamanan terlebih dahulu.');
             hasError = true;
         }
 
@@ -137,6 +144,20 @@ export default function Login() {
                             >
                                 Ingat Saya
                             </label>
+                        </div>
+
+                        <div className="flex flex-col items-center justify-center pt-2 pb-2">
+                            <Turnstile 
+                                siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+                                onSuccess={(token) => setData('cf-turnstile-response', token)}
+                                onExpire={() => setData('cf-turnstile-response', '')}
+                                onError={() => setData('cf-turnstile-response', '')}
+                            />
+                            {errors['cf-turnstile-response'] && (
+                                <div className="mt-2 text-xs text-red-500 text-center">
+                                    {errors['cf-turnstile-response']}
+                                </div>
+                            )}
                         </div>
 
                         <button

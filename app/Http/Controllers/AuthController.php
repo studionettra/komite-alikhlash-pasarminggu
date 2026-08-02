@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Helpers\Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class AuthController extends Controller
@@ -19,7 +21,25 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
+            'cf-turnstile-response' => ['required'],
+        ], [
+            'cf-turnstile-response.required' => 'Silakan verifikasi keamanan terlebih dahulu.',
         ]);
+
+        $verifyResponse = Http::asForm()->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+            'secret' => env('TURNSTILE_SECRET_KEY'),
+            'response' => $request->input('cf-turnstile-response'),
+            'remoteip' => $request->ip(),
+        ]);
+
+        if (! $verifyResponse->json('success')) {
+            throw ValidationException::withMessages([
+                'cf-turnstile-response' => 'Validasi keamanan gagal. Silakan coba lagi.',
+            ]);
+        }
+
+        // Remove turnstile response before attempt
+        unset($credentials['cf-turnstile-response']);
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();

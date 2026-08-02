@@ -12,6 +12,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Korlas\CollectionController;
 use App\Http\Controllers\Korlas\StudentController;
 use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramActivityController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\RoleController;
@@ -35,6 +36,9 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     // Read-only routes (accessible by all authenticated users)
     Route::get('/programs', [ProgramController::class, 'index'])->name('programs.index');
