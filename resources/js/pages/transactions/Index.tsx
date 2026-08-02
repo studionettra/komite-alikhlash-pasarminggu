@@ -1,4 +1,4 @@
-import { Head, useForm, router, usePage } from '@inertiajs/react';
+import { Head, useForm, router, usePage, Link } from '@inertiajs/react';
 import {
     Wallet,
     ArrowDownRight,
@@ -6,12 +6,13 @@ import {
     Faders,
     FileText,
     Trash,
+    CloudArrowUp,
 } from '@phosphor-icons/react';
 import type { FormEventHandler } from 'react';
 import { useState } from 'react';
 import Select from '../../components/ui/Select';
 import DashboardLayout from '../../layouts/DashboardLayout';
-import { confirmDelete } from '../../utils/confirmToast';
+import { confirmDelete } from '../../utils/alertManager';
 
 export default function TransactionsIndex({
     transactions,
@@ -19,9 +20,10 @@ export default function TransactionsIndex({
     filters,
     summary,
 }: any) {
-    const { auth } = usePage().props as any;
+    const { auth, flash } = usePage().props as any;
     const userRole = auth?.user?.roles?.[0]?.name;
     const canManageFinance = ['Superadmin', 'Bendahara'].includes(userRole);
+
     const [selectedProgram, setSelectedProgram] = useState(
         filters?.program_id || '',
     );
@@ -108,6 +110,18 @@ export default function TransactionsIndex({
                         Catat dan pantau arus kas komite.
                     </p>
                 </div>
+                {canManageFinance && (
+                    <Link
+                        href="/transactions/export"
+                        method="post"
+                        as="button"
+                        type="button"
+                        className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-bold text-white shadow-sm transition-colors hover:bg-emerald-700"
+                    >
+                        <CloudArrowUp weight="bold" className="h-5 w-5" />
+                        Export ke Google Sheets
+                    </Link>
+                )}
             </div>
 
             {/* Summary Cards */}
@@ -409,7 +423,7 @@ export default function TransactionsIndex({
                                     { value: '', label: 'Semua Transaksi' },
                                     ...programs.map((p: any) => ({
                                         value: p.id,
-                                        label: `Program: ${p.title}`,
+                                        label: p.title,
                                     })),
                                 ]}
                             />
@@ -424,26 +438,32 @@ export default function TransactionsIndex({
                                     <tr>
                                         <th
                                             scope="col"
-                                            className="px-6 py-4 text-left text-xs font-bold tracking-wider text-slate-500 uppercase"
+                                            className="w-[15%] px-6 py-4 text-left text-xs font-bold tracking-wider text-slate-500 uppercase"
                                         >
-                                            Tanggal & Ket
+                                            Tanggal
                                         </th>
                                         <th
                                             scope="col"
-                                            className="px-6 py-4 text-left text-xs font-bold tracking-wider text-slate-500 uppercase"
+                                            className="w-[35%] px-6 py-4 text-left text-xs font-bold tracking-wider text-slate-500 uppercase"
+                                        >
+                                            Keterangan
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="w-[25%] px-6 py-4 text-left text-xs font-bold tracking-wider text-slate-500 uppercase"
                                         >
                                             Program Kerja
                                         </th>
                                         <th
                                             scope="col"
-                                            className="px-6 py-4 text-right text-xs font-bold tracking-wider text-slate-500 uppercase"
+                                            className="w-[25%] px-6 py-4 text-right text-xs font-bold tracking-wider text-slate-500 uppercase"
                                         >
                                             Nominal
                                         </th>
                                         {canManageFinance && (
                                             <th
                                                 scope="col"
-                                                className="px-6 py-4 text-right text-xs font-bold tracking-wider text-slate-500 uppercase"
+                                                className="w-auto px-6 py-4 text-right text-xs font-bold tracking-wider text-slate-500 uppercase"
                                             >
                                                 Aksi
                                             </th>
@@ -454,9 +474,7 @@ export default function TransactionsIndex({
                                     {transactions.data.length === 0 && (
                                         <tr>
                                             <td
-                                                colSpan={
-                                                    canManageFinance ? 4 : 3
-                                                }
+                                                colSpan={canManageFinance ? 5 : 4}
                                                 className="px-6 py-12 text-center text-slate-500"
                                             >
                                                 <div className="flex flex-col items-center justify-center">
@@ -478,11 +496,8 @@ export default function TransactionsIndex({
                                             className="transition-colors hover:bg-slate-50/80"
                                         >
                                             <td className="px-6 py-4">
-                                                <div className="mb-1 text-xs font-semibold tracking-wider text-slate-500 uppercase">
+                                                <div className="text-xs font-semibold tracking-wider text-slate-500 uppercase">
                                                     {formatDate(trx.date)}
-                                                </div>
-                                                <div className="text-sm font-semibold text-slate-900">
-                                                    {trx.description}
                                                 </div>
                                                 {trx.receipt_path && (
                                                     <a
@@ -495,6 +510,11 @@ export default function TransactionsIndex({
                                                         Lihat Struk
                                                     </a>
                                                 )}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="text-sm font-semibold text-slate-900">
+                                                    {trx.description}
+                                                </div>
                                             </td>
                                             <td className="px-6 py-4">
                                                 {trx.program ? (
@@ -511,9 +531,7 @@ export default function TransactionsIndex({
                                                 <div
                                                     className={`text-sm font-bold ${trx.type === 'income' ? 'text-emerald-600' : 'text-rose-600'}`}
                                                 >
-                                                    {trx.type === 'income'
-                                                        ? '+'
-                                                        : '-'}
+                                                    {trx.type === 'income' ? '+' : '-'}
                                                     {formatRupiah(trx.amount)}
                                                 </div>
                                             </td>
@@ -521,9 +539,7 @@ export default function TransactionsIndex({
                                                 <td className="px-6 py-4 text-right align-top whitespace-nowrap">
                                                     <button
                                                         onClick={() =>
-                                                            deleteTransaction(
-                                                                trx.id,
-                                                            )
+                                                            deleteTransaction(trx.id)
                                                         }
                                                         className="rounded-xl p-2 text-slate-400 transition-all hover:bg-rose-50 hover:text-rose-600"
                                                         title="Hapus Transaksi"
