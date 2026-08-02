@@ -2,6 +2,7 @@ import { Head, usePage } from '@inertiajs/react';
 import bannerImage from '../../images/banners/image-banner-dashboard-komite.png';
 import AnggotaDashboard from '../components/dashboard/AnggotaDashboard';
 import BendaharaDashboard from '../components/dashboard/BendaharaDashboard';
+import KorlasDashboard from '../components/dashboard/KorlasDashboard';
 import SekretarisDashboard from '../components/dashboard/SekretarisDashboard';
 import SuperadminDashboard from '../components/dashboard/SuperadminDashboard';
 import DashboardLayout from '../layouts/DashboardLayout';
@@ -37,6 +38,13 @@ export default function Dashboard(props: any) {
             case 'Sekretaris':
                 return (
                     <SekretarisDashboard
+                        {...props}
+                        formatRupiah={formatRupiah}
+                    />
+                );
+            case 'Korlas':
+                return (
+                    <KorlasDashboard
                         {...props}
                         formatRupiah={formatRupiah}
                     />
@@ -96,7 +104,9 @@ export default function Dashboard(props: any) {
                                       ? 'Kelola administrasi, catat notulensi rapat, dan pastikan seluruh dokumen program kerja terarsip dengan baik.'
                                       : role === 'Superadmin'
                                         ? 'Pantau dan kelola seluruh aktivitas, program kerja, serta transparansi kas Komite dengan mudah dari panel ini.'
-                                        : 'Pantau transparansi kas, agenda program kerja, dan hasil keputusan rapat secara mudah di sini.'}
+                                        : role === 'Korlas'
+                                          ? 'Kelola pendataan siswa dan proses pengumpulan uang kas/donasi kelas Anda dengan efisien.'
+                                          : 'Pantau transparansi kas, agenda program kerja, dan hasil keputusan rapat secara mudah di sini.'}
                             </p>
                         </div>
                     </div>
